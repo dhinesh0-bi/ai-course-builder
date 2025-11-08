@@ -1,0 +1,678 @@
+/* --- 0. LAYOUT AND CONTAINERS --- */
+
+.appContainer {
+  display: flex;
+  height: 100%;
+  width: 100%;
+  background-color: #222831; /* Main Darkest BG */
+  font-family: Arial, sans-serif;
+  overflow: hidden;
+}
+
+.sidebarWrapper {
+  width: 0;
+  min-width: 0;
+  transition: width 0.3s ease-in-out, min-width 0.3s ease-in-out;
+  overflow-x: hidden;
+  background-color: #393E46; /* Dark Gray BG */
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
+  z-index: 100;
+}
+
+.sidebarOpen {
+  width: 250px;
+  min-width: 250px;
+}
+
+.mainContent {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+}
+
+/* --- 1. LOGIN SCREEN --- */
+
+.loginCard {
+  background-color: #393E46; /* Dark Gray */
+  padding: 2.5rem;
+  border-radius: 0.75rem;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  max-width: 400px;
+  width: 90%;
+}
+
+.loginTitle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #EEEEEE; /* Light Text */
+  margin-bottom: 0.5rem;
+}
+
+.loginCard p {
+  color: #EEEEEE; /* Light Text */
+  margin-bottom: 1.5rem;
+}
+
+.loginButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #EEEEEE; /* Light Text */
+  background-color: #00ADB5; /* Teal Accent */
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.loginButton:hover {
+  background-color: #00c0c9; /* Lighter Teal on hover */
+}
+
+/* --- 2. SIDEBAR COMPONENT STYLES --- */
+
+.sidebarContainer {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 250px;
+  color: #EEEEEE; /* Light Text */
+  padding: 1rem 0.5rem;
+}
+
+.sidebarHeader {
+  display: flex;
+  align-items: center;
+  padding: 0 0.5rem 1rem;
+  border-bottom: 1px solid #222831; /* Darkest */
+  margin-bottom: 1rem;
+}
+
+.sidebarTitle {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-left: 0.5rem;
+}
+
+.sidebarIcon {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.historyList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  flex-grow: 1;
+  overflow-y: auto;
+}
+
+.historyItem {
+  display: flex;
+  align-items: center;
+  padding: 0.75rem 0.5rem;
+  margin-bottom: 0.5rem;
+  background-color: #222831; /* Darkest */
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  font-size: 0.9rem;
+  color: #EEEEEE; /* Light Text */
+}
+
+.historyItem:hover {
+  background-color: #00ADB5; /* Teal Accent */
+}
+
+.activeHistoryItem {
+  background-color: #00ADB5 !important; /* Teal Accent */
+  color: #222831; /* Darkest Text */
+  font-weight: 600;
+}
+
+.historyItemIcon {
+  width: 1rem;
+  height: 1rem;
+  margin-right: 0.5rem;
+  flex-shrink: 0;
+}
+
+.historyItemTitle {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex-grow: 1;
+}
+
+.noHistory {
+  color: #EEEEEE; /* Light Text */
+  padding: 1rem 0.5rem;
+  text-align: center;
+  font-style: italic;
+  font-size: 0.9rem;
+}
+
+.clearHistoryButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: 1px solid #EEEEEE; /* Light Border */
+  color: #EEEEEE; /* Light Text */
+  padding: 0.5rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s;
+  font-weight: 600;
+  margin-top: 1rem;
+  flex-shrink: 0;
+}
+
+.clearHistoryButton:hover {
+  background-color: #EEEEEE; /* Light BG */
+  color: #222831; /* Darkest Text */
+}
+
+.historyIcon {
+  width: 1rem;
+  height: 1rem;
+  margin-right: 0.5rem;
+}
+
+/* --- 3. HEADER AND MENU BUTTONS --- */
+
+.header {
+  background-color: #393E46; /* Dark Gray */
+  color: #EEEEEE; /* Light Text */
+  padding: 1rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-shrink: 0;
+}
+
+.menuButton {
+  background: none;
+  border: none;
+  color: #EEEEEE; /* Light */
+  cursor: pointer;
+  padding: 0;
+  margin-right: 1rem;
+}
+
+.headerTitle {
+  font-size: 1.25rem;
+  font-weight: bold;
+  flex-grow: 1;
+}
+
+.headerActions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.newChatButton {
+  background-color: #00ADB5; /* Teal Accent */
+  border: none;
+  color: #EEEEEE; /* Light Text */
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background-color 0.2s;
+  white-space: nowrap;
+}
+
+.newChatButton:hover {
+  background-color: #00c0c9; /* Lighter Teal */
+}
+
+.logoutButton {
+  background: none;
+  border: 1px solid #EEEEEE; /* Light */
+  color: #EEEEEE; /* Light */
+  padding: 0.4rem;
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.logoutButton:hover {
+  background-color: #EEEEEE; /* Light */
+  color: #222831; /* Darkest Text */
+}
+
+.icon {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+/* --- 4. CHAT AREA --- */
+
+.chatArea {
+  flex-grow: 1;
+  overflow-y: auto;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+}
+
+/* --- 5. CHAT MESSAGE --- */
+
+.messageContainer {
+  display: flex;
+  margin-bottom: 1rem;
+  max-width: 100%;
+}
+
+.aiMessage {
+  justify-content: flex-start;
+}
+
+.userMessage {
+  justify-content: flex-end;
+}
+
+.messageBubble {
+  max-width: 80%;
+  padding: 0.75rem 1rem;
+  border-radius: 0.75rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  word-wrap: break-word;
+  overflow: hidden;
+}
+
+.aiMessage .messageBubble {
+  background-color: #EEEEEE; /* Light BG */
+  color: #222831; /* Darkest Text */
+  border-top-left-radius: 0;
+}
+
+.userMessage .messageBubble {
+  background-color: #00ADB5; /* Teal Accent */
+  color: #EEEEEE; /* Light Text */
+  border-bottom-right-radius: 0;
+}
+
+.messageSender {
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+  text-transform: capitalize;
+}
+
+/* --- 6. LOADING SPINNER --- */
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.loaderSpinner {
+  width: 1.5rem;
+  height: 1.5rem;
+  animation: spin 1s linear infinite;
+  margin-right: 0.5rem;
+}
+
+.loadingMessage {
+  display: flex;
+  align-items: center;
+  font-style: italic;
+  color: #393E46; /* Dark Gray */
+}
+
+/* --- 7. CHAT INPUT --- */
+
+.inputContainer {
+  padding: 1rem;
+  background-color: #393E46; /* Dark Gray */
+  border-top: 1px solid #222831; /* Darkest */
+  box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.05);
+  flex-shrink: 0;
+}
+
+.inputWrapper {
+  display: flex;
+}
+
+.inputField {
+  flex: 1;
+  resize: none;
+  border: 1px solid #222831; /* Darkest */
+  padding: 0.75rem;
+  border-radius: 0.5rem 0 0 0.5rem;
+  outline: none;
+  transition: border-color 0.2s;
+  font-family: Arial, sans-serif;
+  font-size: 1rem;
+  background-color: #222831; /* Darkest */
+  color: #EEEEEE; /* Light Text */
+}
+
+.inputField:focus {
+  border-color: #00ADB5; /* Teal Accent */
+  box-shadow: 0 0 0 2px #00ADB560; /* Teal w/ alpha */
+}
+
+.sendButton {
+  background-color: #00ADB5; /* Teal Accent */
+  color: #EEEEEE; /* Light Text */
+  padding: 0.75rem 1rem;
+  border: none;
+  border-radius: 0 0.5rem 0.5rem 0;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+}
+
+.sendButton:hover {
+  background-color: #00c0c9; /* Lighter Teal */
+}
+
+.loadingButton {
+  background-color: #393E46; /* Dark Gray */
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.inputHint {
+  font-size: 0.75rem;
+  color: #EEEEEE; /* Light Text */
+  margin-top: 0.5rem;
+}
+
+/* --- 8. COURSE OUTPUT --- */
+
+.courseOutput {
+  background-color: #dddddd; /* Lighter shade of #EEEEEE */
+  padding: 1rem;
+  border-radius: 0.5rem;
+  border: 1px solid #393E46; /* Dark Gray */
+  margin-top: 0.5rem;
+}
+
+.courseTitle {
+  font-size: 1.125rem;
+  font-weight: bold;
+  color: #222831; /* Darkest */
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.moduleDetails {
+  margin-bottom: 0.75rem;
+  padding: 0.75rem;
+  border-left: 4px solid #00ADB5; /* Teal Accent */
+  background-color: #EEEEEE; /* Light */
+  border-radius: 0.25rem;
+}
+
+.moduleSummary {
+  font-weight: 600;
+  cursor: pointer;
+  color: #222831; /* Darkest */
+}
+
+.lessonHeading {
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-top: 0.5rem;
+  margin-bottom: 0.25rem;
+  color: #222831; /* Darkest */
+}
+
+.lessonList {
+  list-style: disc;
+  padding-left: 1.5rem;
+  margin-top: 0.5rem;
+  color: #393E46; /* Dark Gray */
+}
+
+.lessonItem {
+  padding: 0.25rem 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.875rem;
+}
+
+.editButton {
+  background: none;
+  border: none;
+  color: #00ADB5; /* Teal Accent */
+  cursor: pointer;
+  font-size: 0.75rem;
+  transition: color 0.2s;
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  margin-left: 0.5rem;
+}
+
+.editButton:hover {
+  color: #222831; /* Darkest */
+}
+
+.editIcon {
+  width: 1rem;
+  height: 1rem;
+  margin-right: 0.25rem;
+}
+
+.resourceSection {
+  margin-top: 1rem;
+  padding-top: 0.75rem;
+  border-top: 1px dashed #393E46; /* Dark Gray */
+}
+
+.resourceHeading {
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: #222831; /* Darkest */
+}
+
+.resourceList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.resourceItem {
+  font-size: 0.85rem;
+  padding: 0.2rem 0;
+  display: flex;
+  align-items: flex-start;
+}
+
+.resourceType {
+  font-weight: bold;
+  color: #00ADB5; /* Teal Accent */
+  margin-right: 0.5rem;
+  min-width: 60px;
+  flex-shrink: 0;
+}
+
+.resourceLink {
+  color: #00ADB5; /* Teal Accent */
+  text-decoration: underline;
+  transition: color 0.2s;
+  word-break: break-all;
+}
+
+.resourceLink:hover {
+  color: #222831; /* Darkest */
+}
+
+.finalizeButton {
+  margin-top: 1rem;
+  width: 100%;
+  background-color: #00ADB5; /* Teal Accent */
+  color: #EEEEEE; /* Light Text */
+  padding: 0.75rem;
+  border: none;
+  border-radius: 0.5rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.finalizeButton:hover {
+  background-color: #00c0c9; /* Lighter Teal */
+}
+
+/* --- 9. LOGIN FORM (From previous step) --- */
+
+.loginSubtitle {
+  color: #EEEEEE; /* Light Text */
+  margin-bottom: 1.5rem;
+  font-size: 1rem;
+}
+
+.loginForm {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  text-align: left;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+}
+
+.formGroup label {
+  font-weight: 600;
+  font-size: 0.875rem;
+  margin-bottom: 0.25rem;
+  color: #EEEEEE; /* Light Text */
+}
+
+.formGroup input {
+  font-size: 1rem;
+  padding: 0.75rem;
+  border: 1px solid #222831; /* Darkest */
+  border-radius: 0.5rem;
+  outline: none;
+  background-color: #222831; /* Darkest */
+  color: #EEEEEE; /* Light Text */
+}
+
+.formGroup input:focus {
+  border-color: #00ADB5; /* Teal Accent */
+  box-shadow: 0 0 0 2px #00ADB560; /* Teal w/ alpha */
+}
+
+.loginError {
+  color: #EEEEEE; /* Light Text */
+  font-size: 0.875rem;
+  text-align: center;
+  margin-bottom: 0.5rem;
+  background-color: #c43b3b; /* Red (Not in palette, but needed for error) */
+  padding: 0.5rem;
+  border-radius: 0.25rem;
+}
+
+.submitButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #EEEEEE; /* Light Text */
+  background-color: #00ADB5; /* Teal Accent */
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  margin-top: 0.5rem;
+}
+
+.submitButton:hover {
+  background-color: #00c0c9; /* Lighter Teal */
+}
+
+.divider {
+  font-size: 0.875rem;
+  color: #EEEEEE; /* Light Text */
+  text-align: center;
+  margin: 1.5rem 0;
+  position: relative;
+}
+
+.divider::before,
+.divider::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  width: 40%;
+  height: 1px;
+  background-color: #222831; /* Darkest */
+}
+
+.divider::before {
+  left: 0;
+}
+
+.divider::after {
+  right: 0;
+}
+
+/* Overwrite Google button style */
+.loginButton {
+  gap: 0.75rem;
+  width: 100%;
+  background-color: #EEEEEE; /* Light */
+  color: #222831; /* Darkest Text */
+  border: 1px solid #222831; /* Darkest */
+}
+
+.loginButton:hover {
+  background-color: #dddddd; /* Lighter shade of #EEEEEE */
+}
+
+.iconSmall {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.loginButton svg {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.toggleMode {
+  margin-top: 1.5rem;
+  font-size: 0.875rem;
+  color: #EEEEEE; /* Light Text */
+}
+
+.toggleMode button {
+  background: none;
+  border: none;
+  color: #00ADB5; /* Teal Accent */
+  font-weight: 600;
+  cursor: pointer;
+  margin-left: 0.25rem;
+  text-decoration: underline;
+}
