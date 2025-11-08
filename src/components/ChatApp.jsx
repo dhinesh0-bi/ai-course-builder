@@ -20,12 +20,13 @@ import { LoginScreen } from './LoginScreen';
 import { auth } from '../firebaseConfig';
 
 // ... (Configuration constants: API_URL, etc.)
-// --- Configuration ---
-const API_URL = 'http://localhost:3001/api/generate-course';
-const EXPORT_API_URL = 'http://localhost:3001/api/export-course'; 
-const HISTORY_LOAD_URL = 'http://localhost:3001/api/history/load';
-const HISTORY_SAVE_URL = 'http://localhost:3001/api/history/save'; // 💡 CORRECTED
-const INITIAL_AI_MESSAGE = 'Hello! Describe the topic, audience, and desired duration for your new course.';
+// --- Configuration ---const VITE_API_URL = import.meta.env.VITE_API_URL;
+const VITE_API_URL = import.meta.env.VITE_API_URL;
+
+const API_URL = `${VITE_API_URL}/api/generate-course`;
+const EXPORT_API_URL = `${VITE_API_URL}/api/export-course`; 
+const HISTORY_LOAD_URL = `${VITE_API_URL}/api/history/load`;
+const HISTORY_SAVE_URL = `${VITE_API_URL}/api/history/save`;
 // ... (Helper Functions: generateSessionId, getInitialMessages) ...
 const generateSessionId = () => Date.now().toString(36) + Math.random().toString(36).substring(2);
 const getInitialMessages = (message = INITIAL_AI_MESSAGE) => ([
