@@ -23,10 +23,10 @@ import { auth } from '../firebaseConfig';
 // ------------------------------------------------------------------
 // 💥 CONFIGURATION BLOCK
 // ------------------------------------------------------------------
-const API_URL = 'http://localhost:3001/api/generate-course';
-const EXPORT_API_URL = 'http://localhost:3001/api/export-course'; 
-const HISTORY_LOAD_URL = 'http://localhost:3001/api/history/load';
-const HISTORY_SAVE_URL = 'http://localhost:3001/api/history/save';
+const API_URL = 'https://ai-course-builder-lpeh.onrender.com/api/generate-course';
+const EXPORT_API_URL = 'https://ai-course-builder-lpeh.onrender.com/api/export-course'; 
+const HISTORY_LOAD_URL = 'https://ai-course-builder-lpeh.onrender.com/api/history/load';
+const HISTORY_SAVE_URL = 'https://ai-course-builder-lpeh.onrender.com/api/history/save';
 const INITIAL_AI_MESSAGE = 'Hello! Describe the topic, audience, and desired duration for your new course.';
 
 // --- Helper Functions ---
