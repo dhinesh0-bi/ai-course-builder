@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Loader2 } from 'lucide-react';
-// 💡 Import new Firebase Auth functions
 import { 
     GoogleAuthProvider, 
     signInWithPopup, 
@@ -11,32 +10,36 @@ import {
 } from 'firebase/auth';
 import styles from './ChatStyles.module.css'; 
 
-// ... (other imports: HistorySidebar, ChatHeader, ChatInput, ChatMessage, LoginScreen)
+// Import all the new child components
 import HistorySidebar from './HistorySidebar';
 import ChatHeader from './ChatHeader';
 import ChatInput from './ChatInput';
 import { ChatMessage } from './ChatMessage';
 import { LoginScreen } from './LoginScreen';
+
+// Import Firebase config (which is one level up, in src/)
 import { auth } from '../firebaseConfig';
 
-// ... (Configuration constants: API_URL, etc.)
-// --- Configuration ---const VITE_API_URL = import.meta.env.VITE_API_URL;
-const VITE_API_URL = import.meta.env.VITE_API_URL;
+// ------------------------------------------------------------------
+// 💥 CONFIGURATION BLOCK
+// ------------------------------------------------------------------
+const API_URL = 'http://localhost:3001/api/generate-course';
+const EXPORT_API_URL = 'http://localhost:3001/api/export-course'; 
+const HISTORY_LOAD_URL = 'http://localhost:3001/api/history/load';
+const HISTORY_SAVE_URL = 'http://localhost:3001/api/history/save';
+const INITIAL_AI_MESSAGE = 'Hello! Describe the topic, audience, and desired duration for your new course.';
 
-const API_URL = `${VITE_API_URL}/api/generate-course`;
-const EXPORT_API_URL = `${VITE_API_URL}/api/export-course`; 
-const HISTORY_LOAD_URL = `${VITE_API_URL}/api/history/load`;
-const HISTORY_SAVE_URL = `${VITE_API_URL}/api/history/save`;
-// ... (Helper Functions: generateSessionId, getInitialMessages) ...
+// --- Helper Functions ---
 const generateSessionId = () => Date.now().toString(36) + Math.random().toString(36).substring(2);
+
+// Now this function can safely reference INITIAL_AI_MESSAGE
 const getInitialMessages = (message = INITIAL_AI_MESSAGE) => ([
     { sender: 'ai', content: message, isCourse: false, id: generateSessionId(), timestamp: Date.now() }
 ]);
 
-
 // --- Main Chat App Component ---
 const ChatApp = () => {
-    // ... (All existing state: user, token, messages, history, etc.) ...
+    // --- State Declarations ---
     const [user, setUser] = useState(null);
     const [token, setToken] = useState(null);
     const [messages, setMessages] = useState(getInitialMessages());
@@ -46,8 +49,8 @@ const ChatApp = () => {
     const [loading, setLoading] = useState(false); 
     const [sidebarOpen, setSidebarOpen] = useState(false);
     const [authLoading, setAuthLoading] = useState(true);
-
-    // ... (Existing useEffect for onAuthStateChanged) ...
+    
+    // --- Authentication Effect ---
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
             if (currentUser) {
@@ -66,12 +69,10 @@ const ChatApp = () => {
         return () => unsubscribe(); 
     }, []);
 
-    // ... (Existing useEffect for saveCurrentSession) ...
+    // --- Persistence Effect (Saves to MongoDB) ---
     useEffect(() => {
-        if (user && token && messages.length > 1) { 
-            saveCurrentSession(token, messages);
-        }
-    }, [messages, token, user]); 
+        // We will change this logic based on user feedback to save only on AI response
+    }, []); 
     
     
     // --- Auth Handlers ---
@@ -80,7 +81,7 @@ const ChatApp = () => {
         try {
             await signInWithPopup(auth, provider);
         } catch (error) {
-            console.error("Google login failed:", error);
+            console.error("Login failed:", error);
             alert("Login failed. Check console for details.");
         }
     };
@@ -89,14 +90,11 @@ const ChatApp = () => {
         await signOut(auth);
     };
 
-    // 💡 --- NEW EMAIL AUTH HANDLERS --- 💡
     const handleEmailSignUp = async (email, password) => {
         try {
             await createUserWithEmailAndPassword(auth, email, password);
-            // onAuthStateChanged will handle the rest (setting user, token, loading history)
         } catch (error) {
             console.error("Sign up failed:", error);
-            // Propagate error message back to the LoginScreen
             throw new Error(getFirebaseErrorMessage(error));
         }
     };
@@ -104,7 +102,6 @@ const ChatApp = () => {
     const handleEmailLogin = async (email, password) => {
         try {
             await signInWithEmailAndPassword(auth, email, password);
-            // onAuthStateChanged will handle the rest
         } catch (error) {
             console.error("Sign in failed:", error);
             throw new Error(getFirebaseErrorMessage(error));
@@ -129,9 +126,27 @@ const ChatApp = () => {
         }
     };
 
-    // ... (Rest of the functions: loadHistory, saveCurrentSession, onNewChat, etc.) ...
-    // ... (handleSend, handleExport, etc.) ...
-    // [All other functions remain unchanged]
+    // --- History Functions (API Calls) ---
+    
+    // This function ONLY updates the history list for the sidebar
+    const refreshHistoryList = async (idToken) => {
+        try {
+            const response = await fetch(HISTORY_LOAD_URL, {
+                headers: { 'Authorization': `Bearer ${idToken}` }
+            });
+            if (!response.ok) throw new Error("Failed to load history list.");
+            const data = await response.json();
+            
+            if (data.success && data.history.length > 0) {
+                setHistory(data.history);
+            } else {
+                setHistory([]);
+            }
+        } catch (error) {
+            console.error("History refresh error:", error);
+        }
+    };
+
     const loadHistory = async (idToken) => {
         try {
             const response = await fetch(HISTORY_LOAD_URL, {
@@ -146,6 +161,7 @@ const ChatApp = () => {
                 setMessages(latestSession.messages);
                 setActiveSessionId(latestSession.id);
             } else {
+                // No history found, start a fresh session
                 setHistory([]);
                 const initialMessages = getInitialMessages();
                 setMessages(initialMessages);
@@ -156,20 +172,15 @@ const ChatApp = () => {
         }
     };
 
-    // src/components/ChatApp.jsx
-
     const saveCurrentSession = async (idToken, currentMessages) => {
-        // 💡 Find the first user prompt to use as the title
         const firstUserPrompt = currentMessages.find(msg => msg.sender === 'user')?.content;
-        
-        // 💡 If no user prompt, keep "New Chat", otherwise use the prompt
         const title = firstUserPrompt 
             ? (firstUserPrompt.length > 30 ? firstUserPrompt.substring(0, 30) + "..." : firstUserPrompt)
             : "New Chat";
 
         const sessionData = {
             sessionId: activeSessionId,
-            title: title, // Use the new dynamic title
+            title: title,
             messages: currentMessages
         };
 
@@ -184,7 +195,7 @@ const ChatApp = () => {
             });
             if (!response.ok) throw new Error("Failed to save session.");
             
-            // This refresh will now pull the list with the updated title
+            // Only refresh the sidebar list, don't reload the main chat
             refreshHistoryList(idToken); 
 
         } catch (error) {
@@ -201,22 +212,16 @@ const ChatApp = () => {
         }
     };
 
-    // src/components/ChatApp.jsx
-
-    // ... (inside the ChatApp component)
-
     const onNewChat = () => {
         const newId = generateSessionId();
         
-        // 1. Create the new placeholder session for the sidebar
         const newHistorySession = {
             id: newId,
-            title: "New Chat", // This is the placeholder title
-            messages: [], // Start with empty messages for the history
+            title: "New Chat", // Placeholder title
+            messages: [],
             timestamp: new Date().toISOString()
         };
 
-        // 2. Create the initial message for the main chat window
         const initialMessages = [{ 
             sender: 'ai', 
             content: INITIAL_AI_MESSAGE, 
@@ -224,51 +229,33 @@ const ChatApp = () => {
             isCourse: false 
         }];
 
-        // 3. Update the history state (add the new session to the top)
-        // This will make it appear in the sidebar immediately.
+        // Optimistically update sidebar
         setHistory(prevHistory => [newHistorySession, ...prevHistory]);
-
-        // 4. Set the new state for the chat window
+        
+        // Reset main chat window
         setMessages(initialMessages);
         setActiveSessionId(newId);
         setSidebarOpen(false);
         setInput('');
     };
-    
-    // ... (rest of your ChatApp component)
-
-    // src/components/ChatApp.jsx (Replace the onClearHistory function)
 
     const onClearHistory = async () => {
-        // 1. Confirm with the user
-        if (!window.confirm("Are you sure you want to delete all chat history? This action cannot be undone.")) {
+        if (!window.confirm("Are you sure you want to delete all chat history?")) {
             return;
         }
-
         if (!token) {
             alert("You must be logged in to clear history.");
             return;
         }
-
         try {
-            // 2. Call the new DELETE endpoint
             const response = await fetch('http://localhost:3001/api/history/clear', {
                 method: 'DELETE',
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                }
+                headers: { 'Authorization': `Bearer ${token}` }
             });
-
-            if (!response.ok) {
-                throw new Error('Failed to clear history on the server.');
-            }
-
-            const data = await response.json();
-            console.log(data.message);
-
-            // 3. Clear local state and start a new chat
+            if (!response.ok) throw new Error('Failed to clear history on the server.');
+            
             setHistory([]);
-            onNewChat(); // This already resets the chat window
+            onNewChat(); // Reset to a new, fresh chat
 
         } catch (error) {
             console.error("Clear history error:", error);
@@ -276,6 +263,7 @@ const ChatApp = () => {
         }
     };
 
+    // --- Export Function ---
     const handleExport = async (courseData) => {
         if (!courseData || !courseData.title) {
             alert("Error: No valid course data found to export.");
@@ -307,13 +295,16 @@ const ChatApp = () => {
         }
     };
 
+    // --- Core API Logic ---
     const handleSend = async () => {
         if (input.trim() === '' || loading) return;
 
         const userPrompt = input.trim();
         const newUserMessage = { sender: 'user', content: userPrompt, isCourse: false };
 
-        setMessages((prev) => [...prev, newUserMessage]);
+        let newMessagesList = [...messages, newUserMessage];
+        
+        setMessages(newMessagesList);
         setInput('');
         setLoading(true); 
 
@@ -330,20 +321,30 @@ const ChatApp = () => {
             if (!response.ok) throw new Error(`Server error: ${response.status}`);
 
             const data = await response.json();
-            setMessages((prev) => prev.slice(0, -1));
+            
+            setMessages((prev) => {
+                const updatedList = prev.slice(0, -1); // Remove loading
+                if (data.success && data.course) {
+                    const aiResponse = { sender: 'ai', content: data.course, isCourse: true };
+                    newMessagesList = [...updatedList, aiResponse];
+                    return newMessagesList;
+                } else {
+                     const errorResponse = { sender: 'ai', content: `Error: ${data.error || 'Unknown error'}.`, isCourse: false };
+                    newMessagesList = [...updatedList, errorResponse];
+                    return newMessagesList;
+                }
+            });
 
-            if (data.success && data.course) {
-                const aiResponse = { sender: 'ai', content: data.course, isCourse: true };
-                setMessages((prev) => [...prev, aiResponse]);
-            } else {
-                 const errorResponse = { sender: 'ai', content: `Error: ${data.error || 'Unknown error'}.`, isCourse: false };
-                setMessages((prev) => [...prev, errorResponse]);
+            // Save the complete session (with AI response) to the database
+            if (user && token) {
+                saveCurrentSession(token, newMessagesList);
             }
 
         } catch (error) {
-            setMessages((prev) => prev.slice(0, -1)); 
-            const errorResponse = { sender: 'ai', content: `Connection Error: ${error.message}`, isCourse: false };
-            setMessages((prev) => [...prev, errorResponse]);
+            setMessages((prev) => {
+                 const errorResponse = { sender: 'ai', content: `Connection Error: ${error.message}`, isCourse: false };
+                 return [...prev.slice(0, -1), errorResponse]; // Remove loading, add error
+            });
         } finally {
             setLoading(false); 
         }
@@ -359,7 +360,6 @@ const ChatApp = () => {
     }
 
     if (!user) {
-        // 💡 Pass the new handlers to the LoginScreen
         return <LoginScreen 
             handleGoogleLogin={handleGoogleLogin} 
             handleEmailLogin={handleEmailLogin}
@@ -367,7 +367,6 @@ const ChatApp = () => {
         />;
     }
 
-    // ... (The rest of the return statement for the logged-in app) ...
     return (
         <div className={styles.appContainer}>
             <div className={`${styles.sidebarWrapper} ${sidebarOpen ? styles.sidebarOpen : ''}`}>
@@ -395,7 +394,7 @@ const ChatApp = () => {
                             content={msg.content}
                             isCourse={msg.isCourse}
                             isLoading={index === messages.length - 1 && msg.isLoading}
-                            onExport={handleExport}
+                            onExport={handleExport} // Pass the export handler down
                         />
                     ))}
                 </div>
