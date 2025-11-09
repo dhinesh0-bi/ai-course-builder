@@ -69,9 +69,38 @@ const systemInstruction = `You are an expert Course Generator. Your task is to t
 Do NOT include any extra text, markdown, or explanations.`;
 // --- 2. Middleware Setup ---
 
-app.use(cors()); 
+// --- 2. Middleware Setup ---
+
+// 💡 Configure CORS to explicitly allow your frontend's domain
+// --- 2. Middleware Setup ---
+
+// 💡 Configure CORS to explicitly allow your frontend's domain
+const allowedOrigins = [
+  'https://ai-course-builder-frontend.onrender.com', // Your live frontend
+  'http://localhost:5173' // Your local dev frontend
+];
+
+const corsOptions = {
+  origin: function (origin, callback) {
+    // Allow requests with no origin (like mobile apps or curl)
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.indexOf(origin) === -1) {
+      const msg = 'The CORS policy for this site does not allow access from the specified Origin.';
+      return callback(new Error(msg), false);
+    }
+    return callback(null, true);
+  },
+  optionsSuccessStatus: 200 // For legacy browser support
+};
+
+// 💡 Use the new options for ALL requests (including preflight OPTIONS)
+// This MUST come before app.use(express.json()) and all routes.
+app.use(cors(corsOptions));
+
 app.use(express.json()); 
 
+// ... (Your verifyToken function comes next) ...
+// ...
 // -------------------------------------------------------------------
 // 💥 Middleware Definition (Moved to fix ReferenceError)
 // -------------------------------------------------------------------
