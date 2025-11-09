@@ -54,23 +54,19 @@ const systemInstruction = `You are an expert Course Generator. Your task is to t
   "title": "<Course Title>",
   "modules": [
     {
-      "title": "<Module Title, e.g., Module 1: Introduction>",
-      "lessons": [
-        "<Lesson 1 Title>",
-        "<Lesson 2 Title>"
-      ],
+      "title": "<Module Title>",
+      "lessons": ["<Lesson 1>", "<Lesson 2>"],
       "resources": [ 
         {
-          "type": "Video" | "Article" | "Book",
-          "title": "<Resource Title/Description>",
-          "link": "<Full URL of the source>"
+          "type":  "Article" | "Book" |"Blog",
+          "title": "<Real Resource Title from Search>",
+          "link": "<Real, Verifiable URL from Search>"
         }
       ]
     }
   ]
 }
-Do NOT include any extra text or explanations outside the JSON object. The response must be a valid, parseable JSON string.`;
-
+Do NOT include any extra text, markdown, or explanations.`;
 // --- 2. Middleware Setup ---
 
 app.use(cors()); 
