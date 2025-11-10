@@ -25,9 +25,9 @@ export const CourseOutput = ({ content, onExport }) => {
                         {module.lessons.map((lesson, lessonIndex) => (
                             <li key={lessonIndex} className={styles.lessonItem}>
                                 {lesson}
-                                <button className={styles.editButton}>
+                                {/* <button className={styles.editButton}>
                                     <Edit className={styles.editIcon} /> Edit
-                                </button>
+                                </button> */}
                             </li>
                         ))}
                     </ul>

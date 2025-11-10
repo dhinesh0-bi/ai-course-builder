@@ -296,6 +296,8 @@ const ChatApp = () => {
     };
 
     // --- Core API Logic ---
+    // src/components/ChatApp.jsx
+
     const handleSend = async () => {
         if (input.trim() === '' || loading) return;
 
@@ -318,7 +320,22 @@ const ChatApp = () => {
                 body: JSON.stringify({ prompt: userPrompt }),
             });
 
-            if (!response.ok) throw new Error(`Server error: ${response.status}`);
+            // 💡 **THIS IS THE FIX (Part 1)** 💡
+            // Don't throw an error yet, even if response.ok is false
+            if (!response.ok) {
+                let errorMsg = `Server error: ${response.status}`; // Default message
+                try {
+                    // Try to read the friendly JSON message from the server
+                    const errorData = await response.json();
+                    if (errorData.error) {
+                        errorMsg = errorData.error; // e.g., "The AI model is overloaded..."
+                    }
+                } catch (e) {
+                    // Could not parse JSON, stick with the default message
+                }
+                // Now throw the new, friendly error
+                throw new Error(errorMsg);
+            }
 
             const data = await response.json();
             
@@ -335,16 +352,25 @@ const ChatApp = () => {
                 }
             });
 
-            // Save the complete session (with AI response) to the database
+            // Save the complete session
             if (user && token) {
                 saveCurrentSession(token, newMessagesList);
             }
 
         } catch (error) {
-            setMessages((prev) => {
-                 const errorResponse = { sender: 'ai', content: `Connection Error: ${error.message}`, isCourse: false };
-                 return [...prev.slice(0, -1), errorResponse]; // Remove loading, add error
-            });
+            // 💡 **THIS IS THE FIX (Part 2)** 💡
+            console.error("API Fetch Error:", error);
+            
+            // Remove the loading placeholder
+            setMessages((prev) => prev.slice(0, -1)); 
+
+            // This will now display the friendly message (e.g., "The AI model is overloaded...")
+            const errorResponse = { 
+                sender: 'ai', 
+                content: `${error.message}`, 
+                isCourse: false 
+            };
+            setMessages((prev) => [...prev, errorResponse]);
         } finally {
             setLoading(false); 
         }
