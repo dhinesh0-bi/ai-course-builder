@@ -37,12 +37,11 @@ export const LoginScreen = ({ handleGoogleLogin, handleEmailLogin, handleEmailSi
             <div className={styles.loginCard}>
                 <h2 className={styles.loginTitle}>
                     <MessageSquare className={styles.icon} /> 
-                    AI Course Generator
+                    Course Aura
                 </h2>
                 <p className={styles.loginSubtitle}>
                     {isLoginMode ? 'Sign in to continue' : 'Create an account to get started'}
                 </p>
-
                 {/* --- Email/Password Form --- */}
                 <form onSubmit={handleSubmit} className={styles.loginForm}>
                     <div className={styles.formGroup}>

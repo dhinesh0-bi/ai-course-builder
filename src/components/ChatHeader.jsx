@@ -12,7 +12,7 @@ const ChatHeader = ({ user, onToggleSidebar, onNewChat, onLogout }) => {
                 <Menu className={styles.icon} />
             </button>
             
-            <h1 className={styles.headerTitle}>AI Course Generator</h1>
+            <h1 className={styles.headerTitle}>Course Aura</h1>
             
             <div className={styles.headerActions}>
                 <button className={styles.newChatButton} onClick={onNewChat}>
