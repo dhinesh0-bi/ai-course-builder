@@ -248,7 +248,7 @@ const ChatApp = () => {
             return;
         }
         try {
-            const response = await fetch('http://localhost:3001/api/history/clear', {
+            const response = await fetch('https://ai-course-builder-lpeh.onrender.com/api/history/clear', {
                 method: 'DELETE',
                 headers: { 'Authorization': `Bearer ${token}` }
             });
