@@ -10,36 +10,27 @@ import {
 } from 'firebase/auth';
 import styles from './ChatStyles.module.css'; 
 
-// Import all the new child components
 import HistorySidebar from './HistorySidebar';
 import ChatHeader from './ChatHeader';
 import ChatInput from './ChatInput';
 import { ChatMessage } from './ChatMessage';
 import { LoginScreen } from './LoginScreen';
 
-// Import Firebase config (which is one level up, in src/)
 import { auth } from '../firebaseConfig';
 
-// ------------------------------------------------------------------
-// 💥 CONFIGURATION BLOCK
-// ------------------------------------------------------------------
 const API_URL = 'https://ai-course-builder-lpeh.onrender.com/api/generate-course';
 const EXPORT_API_URL = 'https://ai-course-builder-lpeh.onrender.com/api/export-course'; 
 const HISTORY_LOAD_URL = 'https://ai-course-builder-lpeh.onrender.com/api/history/load';
 const HISTORY_SAVE_URL = 'https://ai-course-builder-lpeh.onrender.com/api/history/save';
 const INITIAL_AI_MESSAGE = 'Hello! Describe the topic, audience, and desired duration for your new course.';
 
-// --- Helper Functions ---
 const generateSessionId = () => Date.now().toString(36) + Math.random().toString(36).substring(2);
 
-// Now this function can safely reference INITIAL_AI_MESSAGE
 const getInitialMessages = (message = INITIAL_AI_MESSAGE) => ([
     { sender: 'ai', content: message, isCourse: false, id: generateSessionId(), timestamp: Date.now() }
 ]);
 
-// --- Main Chat App Component ---
 const ChatApp = () => {
-    // --- State Declarations ---
     const [user, setUser] = useState(null);
     const [token, setToken] = useState(null);
     const [messages, setMessages] = useState(getInitialMessages());
@@ -50,7 +41,6 @@ const ChatApp = () => {
     const [sidebarOpen, setSidebarOpen] = useState(false);
     const [authLoading, setAuthLoading] = useState(true);
     
-    // --- Authentication Effect ---
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
             if (currentUser) {
@@ -69,13 +59,10 @@ const ChatApp = () => {
         return () => unsubscribe(); 
     }, []);
 
-    // --- Persistence Effect (Saves to MongoDB) ---
     useEffect(() => {
-        // We will change this logic based on user feedback to save only on AI response
     }, []); 
     
     
-    // --- Auth Handlers ---
     const handleGoogleLogin = async () => {
         const provider = new GoogleAuthProvider();
         try {
@@ -108,7 +95,6 @@ const ChatApp = () => {
         }
     };
 
-    // Helper to make Firebase errors user-friendly
     const getFirebaseErrorMessage = (error) => {
         switch (error.code) {
             case 'auth/email-already-in-use':
@@ -126,9 +112,6 @@ const ChatApp = () => {
         }
     };
 
-    // --- History Functions (API Calls) ---
-    
-    // This function ONLY updates the history list for the sidebar
     const refreshHistoryList = async (idToken) => {
         try {
             const response = await fetch(HISTORY_LOAD_URL, {
@@ -161,7 +144,6 @@ const ChatApp = () => {
                 setMessages(latestSession.messages);
                 setActiveSessionId(latestSession.id);
             } else {
-                // No history found, start a fresh session
                 setHistory([]);
                 const initialMessages = getInitialMessages();
                 setMessages(initialMessages);
@@ -195,7 +177,6 @@ const ChatApp = () => {
             });
             if (!response.ok) throw new Error("Failed to save session.");
             
-            // Only refresh the sidebar list, don't reload the main chat
             refreshHistoryList(idToken); 
 
         } catch (error) {
@@ -217,7 +198,7 @@ const ChatApp = () => {
         
         const newHistorySession = {
             id: newId,
-            title: "New Chat", // Placeholder title
+            title: "New Chat",
             messages: [],
             timestamp: new Date().toISOString()
         };
@@ -229,10 +210,8 @@ const ChatApp = () => {
             isCourse: false 
         }];
 
-        // Optimistically update sidebar
         setHistory(prevHistory => [newHistorySession, ...prevHistory]);
         
-        // Reset main chat window
         setMessages(initialMessages);
         setActiveSessionId(newId);
         setSidebarOpen(false);
@@ -255,7 +234,7 @@ const ChatApp = () => {
             if (!response.ok) throw new Error('Failed to clear history on the server.');
             
             setHistory([]);
-            onNewChat(); // Reset to a new, fresh chat
+            onNewChat();
 
         } catch (error) {
             console.error("Clear history error:", error);
@@ -263,7 +242,6 @@ const ChatApp = () => {
         }
     };
 
-    // --- Export Function ---
     const handleExport = async (courseData) => {
         if (!courseData || !courseData.title) {
             alert("Error: No valid course data found to export.");
@@ -295,9 +273,6 @@ const ChatApp = () => {
         }
     };
 
-    // --- Core API Logic ---
-    // src/components/ChatApp.jsx
-
     const handleSend = async () => {
         if (input.trim() === '' || loading) return;
 
@@ -319,28 +294,22 @@ const ChatApp = () => {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ prompt: userPrompt }),
             });
-
-            // 💡 **THIS IS THE FIX (Part 1)** 💡
-            // Don't throw an error yet, even if response.ok is false
             if (!response.ok) {
-                let errorMsg = `Server error: ${response.status}`; // Default message
+                let errorMsg = `Server error: ${response.status}`;
                 try {
-                    // Try to read the friendly JSON message from the server
                     const errorData = await response.json();
                     if (errorData.error) {
-                        errorMsg = errorData.error; // e.g., "The AI model is overloaded..."
+                        errorMsg = errorData.error; 
                     }
                 } catch (e) {
-                    // Could not parse JSON, stick with the default message
                 }
-                // Now throw the new, friendly error
                 throw new Error(errorMsg);
             }
 
             const data = await response.json();
             
             setMessages((prev) => {
-                const updatedList = prev.slice(0, -1); // Remove loading
+                const updatedList = prev.slice(0, -1);
                 if (data.success && data.course) {
                     const aiResponse = { sender: 'ai', content: data.course, isCourse: true };
                     newMessagesList = [...updatedList, aiResponse];
@@ -352,19 +321,13 @@ const ChatApp = () => {
                 }
             });
 
-            // Save the complete session
             if (user && token) {
                 saveCurrentSession(token, newMessagesList);
             }
 
         } catch (error) {
-            // 💡 **THIS IS THE FIX (Part 2)** 💡
             console.error("API Fetch Error:", error);
-            
-            // Remove the loading placeholder
             setMessages((prev) => prev.slice(0, -1)); 
-
-            // This will now display the friendly message (e.g., "The AI model is overloaded...")
             const errorResponse = { 
                 sender: 'ai', 
                 content: `${error.message}`, 
@@ -375,8 +338,6 @@ const ChatApp = () => {
             setLoading(false); 
         }
     };
-    
-    // --- Render Logic ---
     if (authLoading) {
         return (
             <div className={styles.appContainer} style={{justifyContent: 'center', alignItems: 'center'}}>
@@ -420,7 +381,7 @@ const ChatApp = () => {
                             content={msg.content}
                             isCourse={msg.isCourse}
                             isLoading={index === messages.length - 1 && msg.isLoading}
-                            onExport={handleExport} // Pass the export handler down
+                            onExport={handleExport} 
                         />
                     ))}
                 </div>

@@ -1,10 +1,9 @@
-/* --- 0. LAYOUT AND CONTAINERS --- */
 
 .appContainer {
   display: flex;
   height: 100%;
   width: 100%;
-  background-color: #222831; /* Main Darkest BG */
+  background-color: #222831;
   font-family: Arial, sans-serif;
   overflow: hidden;
 }
@@ -14,7 +13,7 @@
   min-width: 0;
   transition: width 0.3s ease-in-out, min-width 0.3s ease-in-out;
   overflow-x: hidden;
-  background-color: #393E46; /* Dark Gray BG */
+  background-color: #393E46;
   box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
   z-index: 100;
 }
@@ -32,7 +31,6 @@
   overflow: hidden;
 }
 
-/* --- 1. LOGIN SCREEN --- */
 
 .loginCard {
   background-color: #393E46; /* Dark Gray */
@@ -77,8 +75,6 @@
 .loginButton:hover {
   background-color: #00c0c9; /* Lighter Teal on hover */
 }
-
-/* --- 2. SIDEBAR COMPONENT STYLES --- */
 
 .sidebarContainer {
   display: flex;
@@ -188,11 +184,9 @@
   margin-right: 0.5rem;
 }
 
-/* --- 3. HEADER AND MENU BUTTONS --- */
-
 .header {
-  background-color: #393E46; /* Dark Gray */
-  color: #EEEEEE; /* Light Text */
+  background-color: #393E46;
+  color: #EEEEEE;
   padding: 1rem;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   display: flex;
@@ -261,8 +255,6 @@
   height: 1.25rem;
 }
 
-/* --- 4. CHAT AREA --- */
-
 .chatArea {
   flex-grow: 1;
   overflow-y: auto;
@@ -270,8 +262,6 @@
   display: flex;
   flex-direction: column;
 }
-
-/* --- 5. CHAT MESSAGE --- */
 
 .messageContainer {
   display: flex;
@@ -314,7 +304,6 @@
   text-transform: capitalize;
 }
 
-/* --- 6. LOADING SPINNER --- */
 @keyframes spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
@@ -334,7 +323,6 @@
   color: #393E46; /* Dark Gray */
 }
 
-/* --- 7. CHAT INPUT --- */
 
 .inputContainer {
   padding: 1rem;
@@ -397,7 +385,6 @@
   margin-top: 0.5rem;
 }
 
-/* --- 8. COURSE OUTPUT --- */
 
 .courseOutput {
   background-color: #dddddd; /* Lighter shade of #EEEEEE */
@@ -538,7 +525,6 @@
   background-color: #00c0c9; /* Lighter Teal */
 }
 
-/* --- 9. LOGIN FORM (From previous step) --- */
 
 .loginSubtitle {
   color: #EEEEEE; /* Light Text */
@@ -638,7 +624,6 @@
   right: 0;
 }
 
-/* Overwrite Google button style */
 .loginButton {
   gap: 0.75rem;
   width: 100%;
