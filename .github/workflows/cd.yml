@@ -7,47 +7,61 @@ on:
     branches: [ "main" ]
 
 jobs:
-  build-and-test:
+  # 1. TEST FRONTEND BUILD
+  build-frontend:
     runs-on: ubuntu-latest
-
     steps:
-      # Step A: Checkout repo
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      # Step B: Set up Node
-      - name: Set up Node.js
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
+          cache: 'npm'
 
-      # -------------------------
-      # FRONTEND (React)
-      # -------------------------
-      - name: Install Frontend Dependencies
-        working-directory: ./app
-        run: npm install
+      - name: Install Dependencies
+        run: npm ci
 
-      - name: Run Frontend Tests
-        working-directory: ./app
-        run: npm run dev
-
-      - name: Build Frontend
-        working-directory: ./app
+      - name: Build Frontend (Test)
         run: npm run build
+        env:
+          # We provide a dummy URL just to ensure the build process doesn't crash.
+          # The real URL is injected by Render during actual deployment.
+          VITE_API_URL: "http://localhost:3001"
 
-      # -------------------------
-      # BACKEND (Express)
-      # -------------------------
-      - name: Install Backend Dependencies
+  # 2. TEST BACKEND INSTALLATION
+  build-backend:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
         working-directory: ./server
-        run: npm install
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
 
-      - name: Run Backend Tests
-        working-directory: ./server
-        run: node server.js
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: ./server/package-lock.json
 
-      - name: Lint Backend
-        working-directory: ./server
-        run: npm run lint --if-present
+      - name: Install Dependencies
+        run: npm ci
 
+      # We don't run 'npm start' here because that starts a server that never ends.
+      # We just ensure dependencies install without error.
+
+  # 3. DEPLOY TO RENDER (Only runs if builds pass & on main branch)
+  deploy:
+    needs: [build-frontend, build-backend]
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy Frontend to Render
+        # This calls the unique Deploy Hook URL provided by Render
+        run: curl "${{ secrets.RENDER_FRONTEND_DEPLOY_HOOK }}"
+      
+      - name: Deploy Backend to Render
+        run: curl "${{ secrets.RENDER_BACKEND_DEPLOY_HOOK }}"
