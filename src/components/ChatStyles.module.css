@@ -1,11 +1,15 @@
+/* --- 0. LAYOUT AND CONTAINERS --- */
 
 .appContainer {
   display: flex;
   height: 100%;
   width: 100%;
-  background-color: #222831;
+  /* Main Background */
+  background-color: #130f40;
+  background-image: linear-gradient(315deg, #130f40 0%, #000000 74%);
   font-family: Arial, sans-serif;
   overflow: hidden;
+  color: #EEEEEE; /* Default text color */
 }
 
 .sidebarWrapper {
@@ -13,8 +17,11 @@
   min-width: 0;
   transition: width 0.3s ease-in-out, min-width 0.3s ease-in-out;
   overflow-x: hidden;
-  background-color: #393E46;
-  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
+  /* Semi-transparent dark background for glassmorphism feel */
+  background-color: rgba(0, 0, 0, 0.6); 
+  backdrop-filter: blur(10px);
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.3);
   z-index: 100;
 }
 
@@ -31,12 +38,15 @@
   overflow: hidden;
 }
 
+/* --- 1. LOGIN SCREEN --- */
 
 .loginCard {
-  background-color: #393E46; /* Dark Gray */
+  background-color: rgba(255, 255, 255, 0.05); /* Glass effect */
+  backdrop-filter: blur(10px);
   padding: 2.5rem;
-  border-radius: 0.75rem;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  border-radius: 1rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   text-align: center;
   max-width: 400px;
   width: 90%;
@@ -48,12 +58,12 @@
   justify-content: center;
   font-size: 1.5rem;
   font-weight: 600;
-  color: #EEEEEE; /* Light Text */
+  color: #ffffff;
   margin-bottom: 0.5rem;
 }
 
 .loginCard p {
-  color: #EEEEEE; /* Light Text */
+  color: #cccccc;
   margin-bottom: 1.5rem;
 }
 
@@ -64,24 +74,30 @@
   padding: 0.75rem 1.5rem;
   font-size: 1rem;
   font-weight: 600;
-  color: #EEEEEE; /* Light Text */
-  background-color: #00ADB5; /* Teal Accent */
+  color: #ffffff;
+  /* UPDATED GRADIENT */
+  background-color: #003153;
+  background-image: linear-gradient(315deg, #003153 0%, #0abab5 74%);
   border: none;
   border-radius: 0.5rem;
   cursor: pointer;
-  transition: background-color 0.2s;
+  transition: transform 0.1s, opacity 0.2s;
+  box-shadow: 0 4px 15px rgba(0, 49, 83, 0.3);
 }
 
 .loginButton:hover {
-  background-color: #00c0c9; /* Lighter Teal on hover */
+  opacity: 0.9;
+  transform: translateY(-1px);
 }
+
+/* --- 2. SIDEBAR COMPONENT STYLES --- */
 
 .sidebarContainer {
   display: flex;
   flex-direction: column;
   height: 100%;
   width: 250px;
-  color: #EEEEEE; /* Light Text */
+  color: #EEEEEE;
   padding: 1rem 0.5rem;
 }
 
@@ -89,7 +105,7 @@
   display: flex;
   align-items: center;
   padding: 0 0.5rem 1rem;
-  border-bottom: 1px solid #222831; /* Darkest */
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   margin-bottom: 1rem;
 }
 
@@ -117,21 +133,23 @@
   align-items: center;
   padding: 0.75rem 0.5rem;
   margin-bottom: 0.5rem;
-  background-color: #222831; /* Darkest */
-  border-radius: 4px;
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: 6px;
   cursor: pointer;
   transition: background-color 0.2s;
   font-size: 0.9rem;
-  color: #EEEEEE; /* Light Text */
+  color: #cccccc;
 }
 
 .historyItem:hover {
-  background-color: #00ADB5; /* Teal Accent */
+  background-color: rgba(255, 255, 255, 0.15);
+  color: #ffffff;
 }
 
 .activeHistoryItem {
-  background-color: #00ADB5 !important; /* Teal Accent */
-  color: #222831; /* Darkest Text */
+  background-color: rgba(0, 173, 181, 0.3) !important;
+  border: 1px solid #0abab5;
+  color: #ffffff;
   font-weight: 600;
 }
 
@@ -150,7 +168,7 @@
 }
 
 .noHistory {
-  color: #EEEEEE; /* Light Text */
+  color: #888888;
   padding: 1rem 0.5rem;
   text-align: center;
   font-style: italic;
@@ -162,20 +180,21 @@
   align-items: center;
   justify-content: center;
   background: none;
-  border: 1px solid #EEEEEE; /* Light Border */
-  color: #EEEEEE; /* Light Text */
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #cccccc;
   padding: 0.5rem;
-  border-radius: 4px;
+  border-radius: 6px;
   cursor: pointer;
-  transition: background-color 0.2s, color 0.2s;
+  transition: all 0.2s;
   font-weight: 600;
   margin-top: 1rem;
   flex-shrink: 0;
 }
 
 .clearHistoryButton:hover {
-  background-color: #EEEEEE; /* Light BG */
-  color: #222831; /* Darkest Text */
+  background-color: rgba(239, 68, 68, 0.2); /* Red tint */
+  border-color: #ef4444;
+  color: #ffffff;
 }
 
 .historyIcon {
@@ -184,11 +203,14 @@
   margin-right: 0.5rem;
 }
 
+/* --- 3. HEADER AND MENU BUTTONS --- */
+
 .header {
-  background-color: #393E46;
+  background-color: rgba(0, 0, 0, 0.3); /* Transparent header */
+  backdrop-filter: blur(5px);
   color: #EEEEEE;
   padding: 1rem;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -198,16 +220,24 @@
 .menuButton {
   background: none;
   border: none;
-  color: #EEEEEE; /* Light */
+  color: #EEEEEE;
   cursor: pointer;
   padding: 0;
   margin-right: 1rem;
+  transition: color 0.2s;
+}
+
+.menuButton:hover {
+  color: #0abab5;
 }
 
 .headerTitle {
   font-size: 1.25rem;
   font-weight: bold;
   flex-grow: 1;
+  background: linear-gradient(to right, #ffffff, #0abab5);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .headerActions {
@@ -217,43 +247,48 @@
 }
 
 .newChatButton {
-  background-color: #00ADB5; /* Teal Accent */
+  /* UPDATED GRADIENT */
+  background-color: #003153;
+  background-image: linear-gradient(315deg, #003153 0%, #0abab5 74%);
   border: none;
-  color: #EEEEEE; /* Light Text */
+  color: #ffffff;
   padding: 0.5rem 1rem;
-  border-radius: 4px;
+  border-radius: 6px;
   cursor: pointer;
   font-weight: 600;
-  transition: background-color 0.2s;
+  transition: opacity 0.2s, transform 0.1s;
   white-space: nowrap;
 }
 
 .newChatButton:hover {
-  background-color: #00c0c9; /* Lighter Teal */
+  opacity: 0.9;
+  transform: translateY(-1px);
 }
 
 .logoutButton {
   background: none;
-  border: 1px solid #EEEEEE; /* Light */
-  color: #EEEEEE; /* Light */
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: #EEEEEE;
   padding: 0.4rem;
-  border-radius: 4px;
+  border-radius: 6px;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: background-color 0.2s, color 0.2s;
+  transition: all 0.2s;
 }
 
 .logoutButton:hover {
-  background-color: #EEEEEE; /* Light */
-  color: #222831; /* Darkest Text */
+  background-color: rgba(255, 255, 255, 0.1);
+  border-color: #ffffff;
 }
 
 .icon {
   width: 1.25rem;
   height: 1.25rem;
 }
+
+/* --- 4. CHAT AREA --- */
 
 .chatArea {
   flex-grow: 1;
@@ -262,6 +297,8 @@
   display: flex;
   flex-direction: column;
 }
+
+/* --- 5. CHAT MESSAGE --- */
 
 .messageContainer {
   display: flex;
@@ -281,20 +318,21 @@
   max-width: 80%;
   padding: 0.75rem 1rem;
   border-radius: 0.75rem;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
   word-wrap: break-word;
   overflow: hidden;
+  line-height: 1.5;
 }
 
 .aiMessage .messageBubble {
-  background-color: #EEEEEE; /* Light BG */
-  color: #222831; /* Darkest Text */
+  background-color: rgba(255, 255, 255, 0.9);
+  color: #130f40; /* Dark text for readability on white */
   border-top-left-radius: 0;
 }
 
 .userMessage .messageBubble {
-  background-color: #00ADB5; /* Teal Accent */
-  color: #EEEEEE; /* Light Text */
+  background-color: #0abab5;
+  color: #ffffff;
   border-bottom-right-radius: 0;
 }
 
@@ -302,8 +340,11 @@
   font-weight: 600;
   margin-bottom: 0.25rem;
   text-transform: capitalize;
+  font-size: 0.8rem;
+  opacity: 0.8;
 }
 
+/* --- 6. LOADING SPINNER --- */
 @keyframes spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
@@ -320,15 +361,17 @@
   display: flex;
   align-items: center;
   font-style: italic;
-  color: #393E46; /* Dark Gray */
+  color: #555;
 }
 
+/* --- 7. CHAT INPUT --- */
 
 .inputContainer {
   padding: 1rem;
-  background-color: #393E46; /* Dark Gray */
-  border-top: 1px solid #222831; /* Darkest */
-  box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.05);
+  /* Dark semi-transparent background */
+  background-color: rgba(0, 0, 0, 0.4); 
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.2);
   flex-shrink: 0;
 }
 
@@ -339,30 +382,36 @@
 .inputField {
   flex: 1;
   resize: none;
-  border: 1px solid #222831; /* Darkest */
+  background-color: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
   padding: 0.75rem;
   border-radius: 0.5rem 0 0 0.5rem;
   outline: none;
-  transition: border-color 0.2s;
+  transition: all 0.2s;
   font-family: Arial, sans-serif;
   font-size: 1rem;
-  background-color: #222831; /* Darkest */
-  color: #EEEEEE; /* Light Text */
+  color: #ffffff;
+}
+
+.inputField::placeholder {
+  color: rgba(255, 255, 255, 0.5);
 }
 
 .inputField:focus {
-  border-color: #00ADB5; /* Teal Accent */
-  box-shadow: 0 0 0 2px #00ADB560; /* Teal w/ alpha */
+  border-color: #0abab5;
+  background-color: rgba(255, 255, 255, 0.15);
 }
 
 .sendButton {
-  background-color: #00ADB5; /* Teal Accent */
-  color: #EEEEEE; /* Light Text */
-  padding: 0.75rem 1rem;
+  /* UPDATED GRADIENT */
+  background-color: #003153;
+  background-image: linear-gradient(315deg, #003153 0%, #0abab5 74%);
+  color: #ffffff;
+  padding: 0.75rem 1.25rem;
   border: none;
   border-radius: 0 0.5rem 0.5rem 0;
   cursor: pointer;
-  transition: background-color 0.2s;
+  transition: opacity 0.2s;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -370,34 +419,37 @@
 }
 
 .sendButton:hover {
-  background-color: #00c0c9; /* Lighter Teal */
+  opacity: 0.9;
 }
 
 .loadingButton {
-  background-color: #393E46; /* Dark Gray */
+  background-color: #4a5568;
   cursor: not-allowed;
   pointer-events: none;
 }
 
 .inputHint {
   font-size: 0.75rem;
-  color: #EEEEEE; /* Light Text */
+  color: rgba(255, 255, 255, 0.5);
   margin-top: 0.5rem;
 }
 
+/* --- 8. COURSE OUTPUT --- */
 
 .courseOutput {
-  background-color: #dddddd; /* Lighter shade of #EEEEEE */
+  /* Slightly off-white background for paper feel */
+  background-color: #f0f0f0; 
   padding: 1rem;
   border-radius: 0.5rem;
-  border: 1px solid #393E46; /* Dark Gray */
+  border: 1px solid #ddd;
   margin-top: 0.5rem;
+  color: #333; /* Dark text */
 }
 
 .courseTitle {
   font-size: 1.125rem;
   font-weight: bold;
-  color: #222831; /* Darkest */
+  color: #130f40; /* Dark Blue */
   display: flex;
   align-items: center;
   margin-bottom: 1rem;
@@ -406,15 +458,16 @@
 .moduleDetails {
   margin-bottom: 0.75rem;
   padding: 0.75rem;
-  border-left: 4px solid #00ADB5; /* Teal Accent */
-  background-color: #EEEEEE; /* Light */
-  border-radius: 0.25rem;
+  border-left: 4px solid #0abab5;
+  background-color: #ffffff;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
 }
 
 .moduleSummary {
   font-weight: 600;
   cursor: pointer;
-  color: #222831; /* Darkest */
+  color: #130f40;
 }
 
 .lessonHeading {
@@ -422,14 +475,14 @@
   font-weight: 600;
   margin-top: 0.5rem;
   margin-bottom: 0.25rem;
-  color: #222831; /* Darkest */
+  color: #555;
 }
 
 .lessonList {
   list-style: disc;
   padding-left: 1.5rem;
   margin-top: 0.5rem;
-  color: #393E46; /* Dark Gray */
+  color: #333;
 }
 
 .lessonItem {
@@ -443,7 +496,7 @@
 .editButton {
   background: none;
   border: none;
-  color: #00ADB5; /* Teal Accent */
+  color: #0abab5;
   cursor: pointer;
   font-size: 0.75rem;
   transition: color 0.2s;
@@ -454,7 +507,7 @@
 }
 
 .editButton:hover {
-  color: #222831; /* Darkest */
+  color: #130f40;
 }
 
 .editIcon {
@@ -466,14 +519,14 @@
 .resourceSection {
   margin-top: 1rem;
   padding-top: 0.75rem;
-  border-top: 1px dashed #393E46; /* Dark Gray */
+  border-top: 1px dashed #ccc;
 }
 
 .resourceHeading {
   font-size: 0.9rem;
   font-weight: 600;
   margin-bottom: 0.5rem;
-  color: #222831; /* Darkest */
+  color: #333;
 }
 
 .resourceList {
@@ -491,28 +544,28 @@
 
 .resourceType {
   font-weight: bold;
-  color: #00ADB5; /* Teal Accent */
+  color: #0abab5;
   margin-right: 0.5rem;
   min-width: 60px;
   flex-shrink: 0;
 }
 
 .resourceLink {
-  color: #00ADB5; /* Teal Accent */
+  color: #2563eb;
   text-decoration: underline;
   transition: color 0.2s;
   word-break: break-all;
 }
 
 .resourceLink:hover {
-  color: #222831; /* Darkest */
+  color: #1e40af;
 }
 
 .finalizeButton {
   margin-top: 1rem;
   width: 100%;
-  background-color: #00ADB5; /* Teal Accent */
-  color: #EEEEEE; /* Light Text */
+  background-color: #10b981; /* Green */
+  color: white;
   padding: 0.75rem;
   border: none;
   border-radius: 0.5rem;
@@ -522,12 +575,13 @@
 }
 
 .finalizeButton:hover {
-  background-color: #00c0c9; /* Lighter Teal */
+  background-color: #059669;
 }
 
+/* --- 9. LOGIN FORM SPECIFICS --- */
 
 .loginSubtitle {
-  color: #EEEEEE; /* Light Text */
+  color: #cccccc;
   margin-bottom: 1.5rem;
   font-size: 1rem;
 }
@@ -549,32 +603,33 @@
   font-weight: 600;
   font-size: 0.875rem;
   margin-bottom: 0.25rem;
-  color: #EEEEEE; /* Light Text */
+  color: #EEEEEE;
 }
 
 .formGroup input {
   font-size: 1rem;
   padding: 0.75rem;
-  border: 1px solid #222831; /* Darkest */
+  border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 0.5rem;
   outline: none;
-  background-color: #222831; /* Darkest */
-  color: #EEEEEE; /* Light Text */
+  background-color: rgba(0, 0, 0, 0.2);
+  color: #ffffff;
 }
 
 .formGroup input:focus {
-  border-color: #00ADB5; /* Teal Accent */
-  box-shadow: 0 0 0 2px #00ADB560; /* Teal w/ alpha */
+  border-color: #0abab5;
+  box-shadow: 0 0 0 2px rgba(0, 173, 181, 0.3);
 }
 
 .loginError {
-  color: #EEEEEE; /* Light Text */
+  color: #ff6b6b;
   font-size: 0.875rem;
   text-align: center;
   margin-bottom: 0.5rem;
-  background-color: #c43b3b; /* Red (Not in palette, but needed for error) */
+  background-color: rgba(255, 0, 0, 0.1);
   padding: 0.5rem;
   border-radius: 0.25rem;
+  border: 1px solid rgba(255, 0, 0, 0.2);
 }
 
 .submitButton {
@@ -585,22 +640,25 @@
   padding: 0.75rem;
   font-size: 1rem;
   font-weight: 600;
-  color: #EEEEEE; /* Light Text */
-  background-color: #00ADB5; /* Teal Accent */
+  color: white;
+  /* UPDATED GRADIENT */
+  background-color: #003153;
+  background-image: linear-gradient(315deg, #003153 0%, #0abab5 74%);
   border: none;
   border-radius: 0.5rem;
   cursor: pointer;
-  transition: background-color 0.2s;
+  transition: opacity 0.2s, transform 0.1s;
   margin-top: 0.5rem;
 }
 
 .submitButton:hover {
-  background-color: #00c0c9; /* Lighter Teal */
+  opacity: 0.9;
+  transform: translateY(-1px);
 }
 
 .divider {
   font-size: 0.875rem;
-  color: #EEEEEE; /* Light Text */
+  color: #888;
   text-align: center;
   margin: 1.5rem 0;
   position: relative;
@@ -613,7 +671,7 @@
   top: 50%;
   width: 40%;
   height: 1px;
-  background-color: #222831; /* Darkest */
+  background-color: rgba(255, 255, 255, 0.1);
 }
 
 .divider::before {
@@ -624,16 +682,19 @@
   right: 0;
 }
 
-.loginButton {
+/* Overwrite Google button style for dark theme */
+.loginButton.google {
   gap: 0.75rem;
   width: 100%;
-  background-color: #EEEEEE; /* Light */
-  color: #222831; /* Darkest Text */
-  border: 1px solid #222831; /* Darkest */
+  background-color: #ffffff;
+  color: #333;
+  border: none;
+  background-image: none; /* Remove gradient */
 }
 
-.loginButton:hover {
-  background-color: #dddddd; /* Lighter shade of #EEEEEE */
+.loginButton.google:hover {
+  background-color: #f0f0f0;
+  opacity: 1; /* Reset opacity from standard loginButton hover */
 }
 
 .iconSmall {
@@ -649,13 +710,13 @@
 .toggleMode {
   margin-top: 1.5rem;
   font-size: 0.875rem;
-  color: #EEEEEE; /* Light Text */
+  color: #cccccc;
 }
 
 .toggleMode button {
   background: none;
   border: none;
-  color: #00ADB5; /* Teal Accent */
+  color: #0abab5;
   font-weight: 600;
   cursor: pointer;
   margin-left: 0.25rem;

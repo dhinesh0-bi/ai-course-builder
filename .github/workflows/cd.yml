@@ -1,0 +1,53 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step A: Checkout repo
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      # Step B: Set up Node
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      # -------------------------
+      # FRONTEND (React)
+      # -------------------------
+      - name: Install Frontend Dependencies
+        working-directory: ./app
+        run: npm install
+
+      - name: Run Frontend Tests
+        working-directory: ./app
+        run: npm run dev
+
+      - name: Build Frontend
+        working-directory: ./app
+        run: npm run build
+
+      # -------------------------
+      # BACKEND (Express)
+      # -------------------------
+      - name: Install Backend Dependencies
+        working-directory: ./server
+        run: npm install
+
+      - name: Run Backend Tests
+        working-directory: ./server
+        run: node server.js
+
+      - name: Lint Backend
+        working-directory: ./server
+        run: npm run lint --if-present
+
