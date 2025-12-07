@@ -1,0 +1,24 @@
+groups:
+  - name: hardware_alerts
+    rules:
+      - alert: HighCpuUsage
+        expr: 100 - (avg by(instance) (rate(node_cpu_seconds_total{mode="idle"}[1m])) * 100) > 80
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Instance {{ $labels.instance }} - High CPU Usage"
+          description: "CPU usage is above 80% (current value: {{ $value }})"
+
+groups:
+  - name: test_alerts
+    rules:
+      # This is a dummy alert that always fires so you can see it working
+      - alert: PrometheusTargetMissing
+        expr: up == 0
+        for: 0m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Prometheus target missing (instance {{ $labels.instance }})"
+          description: "A Prometheus target has disappeared. Value = {{ $value }}"

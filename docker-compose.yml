@@ -1,0 +1,34 @@
+services:
+  # 1. Backend Service
+  backend:
+    build: ./server
+    container_name: ai_course_backend
+    ports:
+      - "3001:3001"
+    # Load environment variables from your server/.env file
+    env_file:
+      - ./server/.env
+    environment:
+      - PORT=3001
+    networks:
+      - app-network
+
+  # 2. Frontend Service
+  frontend:
+    build:
+      context: .
+      args:
+        # 💡 IMPORTANT: Since React runs in the browser, this must be localhost 
+        # (or your machine IP) so your browser can reach the backend.
+        - VITE_API_URL=http://localhost:3001
+    container_name: ai_course_frontend
+    ports:
+      - "5173:80" # Map host port 5173 to container port 80 (Nginx)
+    depends_on:
+      - backend
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
