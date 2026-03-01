@@ -1,0 +1,13 @@
+This file tells Google and Bing which pages they are allowed to scan
+
+User-agent: *
+Allow: /
+
+Prevent search engines from indexing private or unnecessary API routes
+
+Disallow: /api/
+Disallow: /admin/
+
+Point search engines directly to your sitemap!
+
+Sitemap: https://www.google.com/search?q=https://ai-course-builder-frontend.onrender.com/sitemap.xml
