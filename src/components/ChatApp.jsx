@@ -18,10 +18,13 @@ import { LoginScreen } from './LoginScreen';
 
 import { auth } from '../firebaseConfig';
 
-const API_URL = 'https://ai-course-builder-lpeh.onrender.com/api/generate-course';
-const EXPORT_API_URL = 'https://ai-course-builder-lpeh.onrender.com/api/export-course'; 
-const HISTORY_LOAD_URL = 'https://ai-course-builder-lpeh.onrender.com/api/history/load';
-const HISTORY_SAVE_URL = 'https://ai-course-builder-lpeh.onrender.com/api/history/save';
+const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+const API_URL = `${BASE_URL}/api/generate-course`;
+const EXPORT_API_URL = `${BASE_URL}/api/export-course`;
+const HISTORY_LOAD_URL = `${BASE_URL}/api/history/load`;
+const HISTORY_SAVE_URL = `${BASE_URL}/api/history/save`;
+const HISTORY_CLEAR_URL = `${BASE_URL}/api/history/clear`;
+
 const INITIAL_AI_MESSAGE = 'Hello! Describe the topic, audience, and desired duration for your new course.';
 
 const generateSessionId = () => Date.now().toString(36) + Math.random().toString(36).substring(2);
@@ -227,7 +230,7 @@ const ChatApp = () => {
             return;
         }
         try {
-            const response = await fetch('https://ai-course-builder-lpeh.onrender.com/api/history/clear', {
+            const response = await fetch(HISTORY_CLEAR_URL, {
                 method: 'DELETE',
                 headers: { 'Authorization': `Bearer ${token}` }
             });
