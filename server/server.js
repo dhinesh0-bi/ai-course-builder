@@ -5,9 +5,9 @@ require('dotenv').config();
 
 const express = require('express');
 const cors = require('cors');
+const rateLimit = require('express-rate-limit');
 const { GoogleGenAI } = require('@google/genai');
 
-// New Imports
 const firebase = require('firebase-admin');
 const { MongoClient } = require('mongodb');
 const PDFDocument = require('pdfkit'); // For PDF generation
@@ -45,7 +45,7 @@ async function connectToMongo() {
 }
 
 // Gemini API Setup
-const ai = new GoogleGenAI({}); 
+const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY }); 
 
 // System Instruction to force a JSON output structure with resources
 const systemInstruction = `You are an expert Course Generator. Your task is to take a user's prompt (Topic, Audience, Duration) and generate a detailed, structured course outline. You MUST return the response ONLY as a JSON object, following this exact schema. For each module, provide at least one source link for a video reference or study material.
@@ -69,15 +69,10 @@ const systemInstruction = `You are an expert Course Generator. Your task is to t
 Do NOT include any extra text, markdown, or explanations.`;
 // --- 2. Middleware Setup ---
 
-// --- 2. Middleware Setup ---
-
-// 💡 Configure CORS to explicitly allow your frontend's domain
-// --- 2. Middleware Setup ---
-
-// 💡 Configure CORS to explicitly allow your frontend's domain
+// Configure CORS to explicitly allow your frontend's domain
 const allowedOrigins = [
-  'https://ai-course-builder-frontend.onrender.com', // Your live frontend
-  'http://localhost:5173' // Your local dev frontend
+  'https://ai-course-builder-frontend.onrender.com', // Live frontend
+  'http://localhost:5173' // Local dev frontend
 ];
 
 const corsOptions = {
@@ -93,16 +88,22 @@ const corsOptions = {
   optionsSuccessStatus: 200 // For legacy browser support
 };
 
-// 💡 Use the new options for ALL requests (including preflight OPTIONS)
-// This MUST come before app.use(express.json()) and all routes.
+// Apply CORS before all routes (including preflight OPTIONS)
 app.use(cors(corsOptions));
+
+// Rate Limiting: 30 requests per 15 minutes per IP for AI generation
+const generateRateLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 30,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { error: 'Too many requests. Please wait a few minutes and try again.' }
+});
 
 app.use(express.json()); 
 
-// ... (Your verifyToken function comes next) ...
-// ...
 // -------------------------------------------------------------------
-// 💥 Middleware Definition (Moved to fix ReferenceError)
+// Authentication Middleware
 // -------------------------------------------------------------------
 
 // Authentication Middleware to verify Firebase ID Token
@@ -126,9 +127,9 @@ const verifyToken = async (req, res, next) => {
 
 // --- 3. API Routes ---
 
-// --- Route 1: Generate Course Outline (Unprotected) ---
+// --- Route 1: Generate Course Outline (Rate-Limited) ---
 
-app.post('/api/generate-course', async (req, res) => {
+app.post('/api/generate-course', generateRateLimiter, async (req, res) => {
     const userPrompt = req.body.prompt;
 
     if (!userPrompt) {
@@ -217,8 +218,9 @@ app.post('/api/export-course', (req, res) => {
     res.setHeader('Content-Disposition', 'attachment; filename="course_outline.pdf"');
 
     const doc = new PDFDocument();
+    // IMPORTANT: pipe BEFORE writing/ending the document
+    doc.pipe(res);
     generatePdf(doc, courseData);
-    doc.pipe(res); 
 });
 
 
@@ -258,9 +260,7 @@ app.post('/api/history/save', verifyToken, async (req, res) => {
     }
 });
 
-// server.js (Add this new route)
-
-// --- Route 5: Clear All History (Protected) ---
+// --- Route 3b: Clear All History (Protected) ---
 
 app.delete('/api/history/clear', verifyToken, async (req, res) => {
     const userId = req.user.uid;
@@ -292,6 +292,7 @@ app.delete('/api/history/clear', verifyToken, async (req, res) => {
     }
 });
 // --- Route 4: History Retrieval (Protected) ---
+
 
 app.get('/api/history/load', verifyToken, async (req, res) => {
     const userId = req.user.uid;
@@ -326,7 +327,20 @@ app.get('/api/history/load', verifyToken, async (req, res) => {
 
 // Start server only after a successful MongoDB connection
 connectToMongo().then(() => {
-    app.listen(port, () => {
+    const server = app.listen(port, () => {
         console.log(`🚀 Backend server running at http://localhost:${port}`);
     });
+
+    // Graceful shutdown: close MongoDB connection when process exits
+    const shutdown = async (signal) => {
+        console.log(`\n${signal} received. Shutting down gracefully...`);
+        server.close(async () => {
+            await mongoClient.close();
+            console.log('MongoDB connection closed. Process exiting.');
+            process.exit(0);
+        });
+    };
+
+    process.on('SIGTERM', () => shutdown('SIGTERM'));
+    process.on('SIGINT', () => shutdown('SIGINT'));
 });
