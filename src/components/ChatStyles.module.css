@@ -1,33 +1,42 @@
 /* --- 0. LAYOUT AND CONTAINERS --- */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+@keyframes meshGradient {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
 
 .appContainer {
   display: flex;
   height: 100%;
   width: 100%;
-  /* Main Background */
-  background-color: #130f40;
-  background-image: linear-gradient(315deg, #130f40 0%, #000000 74%);
-  font-family: Arial, sans-serif;
+  /* Vibrant Animated Mesh Gradient Background */
+  background: linear-gradient(-45deg, #020617, #1e1b4b, #312e81, #4c1d95, #0f172a);
+  background-size: 400% 400%;
+  animation: meshGradient 20s ease infinite;
+  font-family: 'Inter', Arial, sans-serif;
   overflow: hidden;
-  color: #EEEEEE; /* Default text color */
+  color: #f8fafc;
 }
 
 .sidebarWrapper {
   width: 0;
   min-width: 0;
-  transition: width 0.3s ease-in-out, min-width 0.3s ease-in-out;
+  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1), min-width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   overflow-x: hidden;
-  /* Semi-transparent dark background for glassmorphism feel */
-  background-color: rgba(0, 0, 0, 0.6); 
-  backdrop-filter: blur(10px);
-  border-right: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.3);
+  /* Glassmorphism Sidebar */
+  background: rgba(15, 23, 42, 0.4);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-right: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 4px 0 24px rgba(0, 0, 0, 0.4);
   z-index: 100;
 }
 
 .sidebarOpen {
-  width: 250px;
-  min-width: 250px;
+  width: 280px;
+  min-width: 280px;
 }
 
 .mainContent {
@@ -41,14 +50,15 @@
 /* --- 1. LOGIN SCREEN --- */
 
 .loginCard {
-  background-color: rgba(255, 255, 255, 0.05); /* Glass effect */
-  backdrop-filter: blur(10px);
-  padding: 2.5rem;
-  border-radius: 1rem;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  padding: 3rem 2.5rem;
+  border-radius: 1.5rem;
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
   border: 1px solid rgba(255, 255, 255, 0.1);
   text-align: center;
-  max-width: 400px;
+  max-width: 420px;
   width: 90%;
 }
 
@@ -56,38 +66,38 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.5rem;
-  font-weight: 600;
+  font-size: 1.75rem;
+  font-weight: 700;
   color: #ffffff;
   margin-bottom: 0.5rem;
+  text-shadow: 0 2px 10px rgba(0,0,0,0.5);
 }
 
 .loginCard p {
-  color: #cccccc;
-  margin-bottom: 1.5rem;
+  color: #cbd5e1;
+  margin-bottom: 2rem;
+  font-size: 1rem;
 }
 
 .loginButton {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 0.75rem 1.5rem;
+  padding: 0.85rem 1.5rem;
   font-size: 1rem;
   font-weight: 600;
   color: #ffffff;
-  /* UPDATED GRADIENT */
-  background-color: #003153;
-  background-image: linear-gradient(315deg, #003153 0%, #0abab5 74%);
+  background: linear-gradient(135deg, #0ea5e9, #6366f1);
   border: none;
-  border-radius: 0.5rem;
+  border-radius: 0.75rem;
   cursor: pointer;
-  transition: transform 0.1s, opacity 0.2s;
-  box-shadow: 0 4px 15px rgba(0, 49, 83, 0.3);
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
 }
 
 .loginButton:hover {
-  opacity: 0.9;
-  transform: translateY(-1px);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(99, 102, 241, 0.6);
 }
 
 /* --- 2. SIDEBAR COMPONENT STYLES --- */
@@ -96,23 +106,23 @@
   display: flex;
   flex-direction: column;
   height: 100%;
-  width: 250px;
-  color: #EEEEEE;
-  padding: 1rem 0.5rem;
+  width: 280px;
+  padding: 1.5rem 1rem;
 }
 
 .sidebarHeader {
   display: flex;
   align-items: center;
-  padding: 0 0.5rem 1rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  margin-bottom: 1rem;
+  padding: 0 0.5rem 1.25rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  margin-bottom: 1.25rem;
 }
 
 .sidebarTitle {
-  font-size: 1.1rem;
+  font-size: 1.15rem;
   font-weight: 600;
   margin-left: 0.5rem;
+  letter-spacing: 0.5px;
 }
 
 .sidebarIcon {
@@ -128,35 +138,50 @@
   overflow-y: auto;
 }
 
+/* Custom Scrollbar for modern look */
+.historyList::-webkit-scrollbar, .chatArea::-webkit-scrollbar {
+  width: 6px;
+}
+.historyList::-webkit-scrollbar-thumb, .chatArea::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+}
+.historyList::-webkit-scrollbar-thumb:hover, .chatArea::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
 .historyItem {
   display: flex;
   align-items: center;
-  padding: 0.75rem 0.5rem;
+  padding: 0.85rem 0.75rem;
   margin-bottom: 0.5rem;
-  background-color: rgba(255, 255, 255, 0.05);
-  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid transparent;
+  border-radius: 0.75rem;
   cursor: pointer;
-  transition: background-color 0.2s;
-  font-size: 0.9rem;
-  color: #cccccc;
+  transition: all 0.2s ease;
+  font-size: 0.95rem;
+  color: #94a3b8;
 }
 
 .historyItem:hover {
-  background-color: rgba(255, 255, 255, 0.15);
-  color: #ffffff;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #f8fafc;
 }
 
 .activeHistoryItem {
-  background-color: rgba(0, 173, 181, 0.3) !important;
-  border: 1px solid #0abab5;
+  background: rgba(99, 102, 241, 0.2) !important;
+  border: 1px solid rgba(99, 102, 241, 0.4) !important;
   color: #ffffff;
-  font-weight: 600;
+  font-weight: 500;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
 
 .historyItemIcon {
   width: 1rem;
   height: 1rem;
-  margin-right: 0.5rem;
+  margin-right: 0.75rem;
   flex-shrink: 0;
 }
 
@@ -168,33 +193,34 @@
 }
 
 .noHistory {
-  color: #888888;
-  padding: 1rem 0.5rem;
+  color: #64748b;
+  padding: 1.5rem 0.5rem;
   text-align: center;
   font-style: italic;
-  font-size: 0.9rem;
+  font-size: 0.95rem;
 }
 
 .clearHistoryButton {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: none;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  color: #cccccc;
-  padding: 0.5rem;
-  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #94a3b8;
+  padding: 0.75rem;
+  border-radius: 0.75rem;
   cursor: pointer;
-  transition: all 0.2s;
-  font-weight: 600;
+  transition: all 0.2s ease;
+  font-weight: 500;
   margin-top: 1rem;
   flex-shrink: 0;
 }
 
 .clearHistoryButton:hover {
-  background-color: rgba(239, 68, 68, 0.2); /* Red tint */
-  border-color: #ef4444;
-  color: #ffffff;
+  background: rgba(239, 68, 68, 0.15);
+  border-color: rgba(239, 68, 68, 0.4);
+  color: #fca5a5;
+  box-shadow: 0 4px 15px rgba(239, 68, 68, 0.2);
 }
 
 .historyIcon {
@@ -206,47 +232,43 @@
 /* --- 3. HEADER AND MENU BUTTONS --- */
 
 .chatHeader {
-  background-color: rgba(0, 0, 0, 0.35);
-  backdrop-filter: blur(5px);
-  color: #EEEEEE;
-  padding: 0.75rem 1rem;
+  background: rgba(15, 23, 42, 0.4);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  color: #f8fafc;
+  padding: 1rem 1.5rem;
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   display: flex;
   align-items: center;
   justify-content: space-between;
   flex-shrink: 0;
+  z-index: 10;
 }
 
-/* Legacy alias kept for compatibility */
 .header {
-  background-color: rgba(0, 0, 0, 0.3);
-  backdrop-filter: blur(5px);
-  color: #EEEEEE;
-  padding: 1rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-shrink: 0;
+  /* Legacy alias */
+  background: rgba(15, 23, 42, 0.4);
+  backdrop-filter: blur(16px);
 }
 
 .iconButton {
-  background: none;
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  color: #EEEEEE;
-  padding: 0.4rem;
-  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #e2e8f0;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: background-color 0.2s, border-color 0.2s, color 0.2s;
+  transition: all 0.2s ease;
 }
 
 .iconButton:hover {
-  background-color: rgba(255, 255, 255, 0.1);
-  border-color: #0abab5;
-  color: #0abab5;
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+  transform: translateY(-1px);
 }
 
 .iconMd {
@@ -258,17 +280,15 @@
   display: flex;
   align-items: center;
   text-decoration: none;
-  color: inherit;
-  opacity: 1;
   transition: opacity 0.2s;
 }
 
 .headerLogo:hover {
-  opacity: 0.8;
+  opacity: 0.85;
 }
 
 .logoImage {
-  height: 2.5rem;
+  height: 2.75rem;
   width: auto;
   object-fit: contain;
 }
@@ -276,67 +296,68 @@
 .menuButton {
   background: none;
   border: none;
-  color: #EEEEEE;
+  color: #e2e8f0;
   cursor: pointer;
-  padding: 0;
-  margin-right: 1rem;
+  padding: 0.25rem;
+  margin-right: 1.25rem;
   transition: color 0.2s;
 }
 
 .menuButton:hover {
-  color: #0abab5;
+  color: #ffffff;
 }
 
 .headerTitle {
-  font-size: 1.25rem;
-  font-weight: bold;
+  font-size: 1.35rem;
+  font-weight: 700;
   flex-grow: 1;
-  background: linear-gradient(to right, #ffffff, #0abab5);
+  background: linear-gradient(to right, #ffffff, #a5b4fc);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  letter-spacing: 0.5px;
 }
 
 .headerActions {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
+  gap: 1rem;
 }
 
 .newChatButton {
-  /* UPDATED GRADIENT */
-  background-color: #003153;
-  background-image: linear-gradient(315deg, #003153 0%, #0abab5 74%);
+  background: linear-gradient(135deg, #0ea5e9, #6366f1);
   border: none;
   color: #ffffff;
-  padding: 0.5rem 1rem;
-  border-radius: 6px;
+  padding: 0.65rem 1.25rem;
+  border-radius: 0.75rem;
   cursor: pointer;
   font-weight: 600;
-  transition: opacity 0.2s, transform 0.1s;
+  transition: all 0.3s ease;
   white-space: nowrap;
+  box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
 }
 
 .newChatButton:hover {
-  opacity: 0.9;
-  transform: translateY(-1px);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(99, 102, 241, 0.5);
 }
 
 .logoutButton {
-  background: none;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  color: #EEEEEE;
-  padding: 0.4rem;
-  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #cbd5e1;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.2s;
+  transition: all 0.2s ease;
 }
 
 .logoutButton:hover {
-  background-color: rgba(255, 255, 255, 0.1);
-  border-color: #ffffff;
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.2);
+  color: #ffffff;
 }
 
 .icon {
@@ -349,17 +370,24 @@
 .chatArea {
   flex-grow: 1;
   overflow-y: auto;
-  padding: 1.5rem;
+  padding: 2rem 1.5rem;
   display: flex;
   flex-direction: column;
+  scroll-behavior: smooth;
 }
 
 /* --- 5. CHAT MESSAGE --- */
 
 .messageContainer {
   display: flex;
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
   max-width: 100%;
+  animation: fadeIn 0.4s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 .aiMessage {
@@ -371,36 +399,47 @@
 }
 
 .messageBubble {
-  max-width: 80%;
-  padding: 0.75rem 1rem;
-  border-radius: 0.75rem;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+  max-width: 85%;
+  padding: 1.25rem;
+  border-radius: 1.25rem;
   word-wrap: break-word;
-  overflow: hidden;
-  line-height: 1.5;
+  line-height: 1.6;
+  font-size: 1rem;
 }
 
 .aiMessage .messageBubble {
-  background-color: rgba(255, 255, 255, 0.9);
-  color: #130f40; /* Dark text for readability on white */
-  border-top-left-radius: 0;
+  /* Frosted Glass AI Bubble */
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+  color: #f8fafc;
+  border-top-left-radius: 0.25rem;
 }
 
 .userMessage .messageBubble {
-  background-color: #0abab5;
+  /* Vibrant Glass User Bubble */
+  background: rgba(99, 102, 241, 0.35);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(165, 180, 252, 0.2);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2);
   color: #ffffff;
-  border-bottom-right-radius: 0;
+  border-bottom-right-radius: 0.25rem;
 }
 
 .messageSender {
   font-weight: 600;
-  margin-bottom: 0.25rem;
+  margin-bottom: 0.5rem;
   text-transform: capitalize;
-  font-size: 0.8rem;
-  opacity: 0.8;
+  font-size: 0.85rem;
+  opacity: 0.7;
+  letter-spacing: 0.5px;
 }
 
 /* --- 6. LOADING SPINNER --- */
+
 @keyframes spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
@@ -411,151 +450,175 @@
   height: 1.5rem;
   animation: spin 1s linear infinite;
   margin-right: 0.5rem;
+  color: #6366f1;
 }
 
 .loadingMessage {
   display: flex;
   align-items: center;
   font-style: italic;
-  color: #555;
+  color: #94a3b8;
 }
 
 /* --- 7. CHAT INPUT --- */
 
 .inputContainer {
-  padding: 1rem;
-  /* Dark semi-transparent background */
-  background-color: rgba(0, 0, 0, 0.4); 
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.2);
+  padding: 1.5rem;
+  background: rgba(15, 23, 42, 0.4);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.3);
   flex-shrink: 0;
+  z-index: 10;
 }
 
 .inputWrapper {
   display: flex;
+  max-width: 1200px;
+  margin: 0 auto;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 1rem;
+  overflow: hidden;
+  box-shadow: inset 0 2px 5px rgba(0,0,0,0.2);
+  transition: all 0.3s ease;
+}
+
+.inputWrapper:focus-within {
+  border-color: rgba(99, 102, 241, 0.5);
+  box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2), inset 0 2px 5px rgba(0,0,0,0.2);
+  background: rgba(255, 255, 255, 0.05);
 }
 
 .inputField {
   flex: 1;
   resize: none;
-  background-color: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  padding: 0.75rem;
-  border-radius: 0.5rem 0 0 0.5rem;
+  background: transparent;
+  border: none;
+  padding: 1.25rem;
   outline: none;
-  transition: all 0.2s;
-  font-family: Arial, sans-serif;
-  font-size: 1rem;
+  font-family: 'Inter', sans-serif;
+  font-size: 1.05rem;
   color: #ffffff;
+  line-height: 1.5;
 }
 
 .inputField::placeholder {
-  color: rgba(255, 255, 255, 0.5);
-}
-
-.inputField:focus {
-  border-color: #0abab5;
-  background-color: rgba(255, 255, 255, 0.15);
+  color: rgba(255, 255, 255, 0.4);
 }
 
 .sendButton {
-  /* UPDATED GRADIENT */
-  background-color: #003153;
-  background-image: linear-gradient(315deg, #003153 0%, #0abab5 74%);
+  background: linear-gradient(135deg, #0ea5e9, #6366f1);
   color: #ffffff;
-  padding: 0.75rem 1.25rem;
+  padding: 0 1.75rem;
   border: none;
-  border-radius: 0 0.5rem 0.5rem 0;
   cursor: pointer;
-  transition: opacity 0.2s;
+  transition: all 0.3s ease;
   display: flex;
   align-items: center;
   justify-content: center;
   font-weight: 600;
+  font-size: 1.05rem;
 }
 
 .sendButton:hover {
-  opacity: 0.9;
+  filter: brightness(1.1);
 }
 
 .loadingButton {
-  background-color: #4a5568;
+  background: rgba(255, 255, 255, 0.1);
+  color: #94a3b8;
   cursor: not-allowed;
   pointer-events: none;
 }
 
 .inputHint {
-  font-size: 0.75rem;
-  color: rgba(255, 255, 255, 0.5);
-  margin-top: 0.5rem;
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.4);
+  margin-top: 0.75rem;
+  text-align: center;
 }
 
 /* --- 8. COURSE OUTPUT --- */
 
 .courseOutput {
-  /* Slightly off-white background for paper feel */
-  background-color: #f0f0f0; 
-  padding: 1rem;
-  border-radius: 0.5rem;
-  border: 1px solid #ddd;
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  padding: 1.5rem;
+  border-radius: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
   margin-top: 0.5rem;
-  color: #333; /* Dark text */
+  color: #f8fafc;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
 }
 
 .courseTitle {
-  font-size: 1.125rem;
-  font-weight: bold;
-  color: #130f40; /* Dark Blue */
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #ffffff;
   display: flex;
   align-items: center;
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding-bottom: 1rem;
 }
 
 .moduleDetails {
-  margin-bottom: 0.75rem;
-  padding: 0.75rem;
-  border-left: 4px solid #0abab5;
-  background-color: #ffffff;
-  border-radius: 4px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  margin-bottom: 1rem;
+  padding: 1.25rem;
+  border-left: 4px solid #6366f1;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 0 0.5rem 0.5rem 0;
+  transition: all 0.3s ease;
+}
+
+.moduleDetails:hover {
+  background: rgba(0, 0, 0, 0.3);
 }
 
 .moduleSummary {
   font-weight: 600;
   cursor: pointer;
-  color: #130f40;
+  color: #e2e8f0;
+  font-size: 1.1rem;
 }
 
 .lessonHeading {
-  font-size: 0.9rem;
+  font-size: 0.95rem;
   font-weight: 600;
-  margin-top: 0.5rem;
-  margin-bottom: 0.25rem;
-  color: #555;
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
+  color: #94a3b8;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .lessonList {
   list-style: disc;
   padding-left: 1.5rem;
   margin-top: 0.5rem;
-  color: #333;
+  color: #cbd5e1;
 }
 
 .lessonItem {
-  padding: 0.25rem 0;
+  padding: 0.35rem 0;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 0.875rem;
+  font-size: 0.95rem;
 }
 
 .editButton {
-  background: none;
-  border: none;
-  color: #0abab5;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+  padding: 0.25rem 0.5rem;
+  color: #a5b4fc;
   cursor: pointer;
   font-size: 0.75rem;
-  transition: color 0.2s;
+  transition: all 0.2s ease;
   display: flex;
   align-items: center;
   flex-shrink: 0;
@@ -563,26 +626,30 @@
 }
 
 .editButton:hover {
-  color: #130f40;
+  background: rgba(99, 102, 241, 0.2);
+  color: #ffffff;
+  border-color: rgba(99, 102, 241, 0.5);
 }
 
 .editIcon {
-  width: 1rem;
-  height: 1rem;
+  width: 0.85rem;
+  height: 0.85rem;
   margin-right: 0.25rem;
 }
 
 .resourceSection {
-  margin-top: 1rem;
-  padding-top: 0.75rem;
-  border-top: 1px dashed #ccc;
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px dashed rgba(255, 255, 255, 0.1);
 }
 
 .resourceHeading {
-  font-size: 0.9rem;
+  font-size: 0.95rem;
   font-weight: 600;
-  margin-bottom: 0.5rem;
-  color: #333;
+  margin-bottom: 0.75rem;
+  color: #94a3b8;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .resourceList {
@@ -592,61 +659,73 @@
 }
 
 .resourceItem {
-  font-size: 0.85rem;
-  padding: 0.2rem 0;
+  font-size: 0.9rem;
+  padding: 0.35rem 0;
   display: flex;
   align-items: flex-start;
+  color: #cbd5e1;
 }
 
 .resourceType {
   font-weight: bold;
-  color: #0abab5;
-  margin-right: 0.5rem;
-  min-width: 60px;
+  color: #38bdf8;
+  margin-right: 0.75rem;
+  min-width: 65px;
   flex-shrink: 0;
+  background: rgba(56, 189, 248, 0.1);
+  padding: 0.15rem 0.4rem;
+  border-radius: 4px;
+  text-align: center;
+  font-size: 0.75rem;
+  text-transform: uppercase;
 }
 
 .resourceLink {
-  color: #2563eb;
-  text-decoration: underline;
+  color: #a5b4fc;
+  text-decoration: none;
   transition: color 0.2s;
   word-break: break-all;
+  border-bottom: 1px solid transparent;
 }
 
 .resourceLink:hover {
-  color: #1e40af;
+  color: #ffffff;
+  border-bottom-color: #ffffff;
 }
 
 .finalizeButton {
-  margin-top: 1rem;
+  margin-top: 2rem;
   width: 100%;
-  background-color: #10b981; /* Green */
+  background: linear-gradient(135deg, #10b981, #059669);
   color: white;
-  padding: 0.75rem;
+  padding: 1rem;
   border: none;
-  border-radius: 0.5rem;
-  font-weight: bold;
+  border-radius: 0.75rem;
+  font-weight: 600;
+  font-size: 1.1rem;
   cursor: pointer;
-  transition: background-color 0.2s;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
 }
 
 .finalizeButton:hover {
-  background-color: #059669;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(16, 185, 129, 0.5);
 }
 
 /* --- 9. LOGIN FORM SPECIFICS --- */
 
 .loginSubtitle {
-  color: #cccccc;
-  margin-bottom: 1.5rem;
-  font-size: 1rem;
+  color: #94a3b8;
+  margin-bottom: 2rem;
+  font-size: 1.05rem;
 }
 
 .loginForm {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
-  margin-bottom: 1rem;
+  gap: 1.25rem;
+  margin-bottom: 1.5rem;
   text-align: left;
 }
 
@@ -656,36 +735,38 @@
 }
 
 .formGroup label {
-  font-weight: 600;
-  font-size: 0.875rem;
-  margin-bottom: 0.25rem;
-  color: #EEEEEE;
+  font-weight: 500;
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+  color: #e2e8f0;
 }
 
 .formGroup input {
   font-size: 1rem;
-  padding: 0.75rem;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 0.5rem;
+  padding: 0.85rem;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 0.75rem;
   outline: none;
-  background-color: rgba(0, 0, 0, 0.2);
+  background: rgba(0, 0, 0, 0.2);
   color: #ffffff;
+  transition: all 0.3s ease;
 }
 
 .formGroup input:focus {
-  border-color: #0abab5;
-  box-shadow: 0 0 0 2px rgba(0, 173, 181, 0.3);
+  border-color: #6366f1;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+  background: rgba(0, 0, 0, 0.4);
 }
 
 .loginError {
-  color: #ff6b6b;
-  font-size: 0.875rem;
+  color: #fca5a5;
+  font-size: 0.9rem;
   text-align: center;
-  margin-bottom: 0.5rem;
-  background-color: rgba(255, 0, 0, 0.1);
-  padding: 0.5rem;
-  border-radius: 0.25rem;
-  border: 1px solid rgba(255, 0, 0, 0.2);
+  margin-bottom: 1rem;
+  background: rgba(239, 68, 68, 0.1);
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  border: 1px solid rgba(239, 68, 68, 0.2);
 }
 
 .submitButton {
@@ -693,30 +774,29 @@
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  padding: 0.75rem;
-  font-size: 1rem;
+  padding: 0.85rem;
+  font-size: 1.05rem;
   font-weight: 600;
   color: white;
-  /* UPDATED GRADIENT */
-  background-color: #003153;
-  background-image: linear-gradient(315deg, #003153 0%, #0abab5 74%);
+  background: linear-gradient(135deg, #0ea5e9, #6366f1);
   border: none;
-  border-radius: 0.5rem;
+  border-radius: 0.75rem;
   cursor: pointer;
-  transition: opacity 0.2s, transform 0.1s;
+  transition: all 0.3s ease;
   margin-top: 0.5rem;
+  box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
 }
 
 .submitButton:hover {
-  opacity: 0.9;
-  transform: translateY(-1px);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(99, 102, 241, 0.5);
 }
 
 .divider {
-  font-size: 0.875rem;
-  color: #888;
+  font-size: 0.9rem;
+  color: #64748b;
   text-align: center;
-  margin: 1.5rem 0;
+  margin: 1.75rem 0;
   position: relative;
 }
 
@@ -727,7 +807,7 @@
   top: 50%;
   width: 40%;
   height: 1px;
-  background-color: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.1);
 }
 
 .divider::before {
@@ -738,19 +818,18 @@
   right: 0;
 }
 
-/* Overwrite Google button style for dark theme */
 .loginButton.google {
   gap: 0.75rem;
   width: 100%;
-  background-color: #ffffff;
-  color: #333;
-  border: none;
-  background-image: none; /* Remove gradient */
+  background: rgba(255, 255, 255, 0.05);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: none;
 }
 
 .loginButton.google:hover {
-  background-color: #f0f0f0;
-  opacity: 1; /* Reset opacity from standard loginButton hover */
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.2);
 }
 
 .iconSmall {
@@ -764,17 +843,24 @@
 }
 
 .toggleMode {
-  margin-top: 1.5rem;
-  font-size: 0.875rem;
-  color: #cccccc;
+  margin-top: 2rem;
+  font-size: 0.95rem;
+  color: #cbd5e1;
 }
 
 .toggleMode button {
   background: none;
   border: none;
-  color: #0abab5;
+  color: #a5b4fc;
   font-weight: 600;
   cursor: pointer;
-  margin-left: 0.25rem;
-  text-decoration: underline;
+  margin-left: 0.5rem;
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: all 0.2s ease;
+}
+
+.toggleMode button:hover {
+  color: #ffffff;
+  border-bottom-color: #ffffff;
 }

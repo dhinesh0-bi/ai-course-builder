@@ -6,6 +6,8 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const rateLimit = require('express-rate-limit');
+const helmet = require('helmet');
+const mongoSanitize = require('express-mongo-sanitize');
 const { GoogleGenAI } = require('@google/genai');
 
 const firebase = require('firebase-admin');
@@ -90,6 +92,12 @@ const corsOptions = {
 
 // Apply CORS before all routes (including preflight OPTIONS)
 app.use(cors(corsOptions));
+
+// Apply security headers
+app.use(helmet());
+
+// Apply MongoDB sanitization (prevents NoSQL injection)
+app.use(mongoSanitize());
 
 // Rate Limiting: 30 requests per 15 minutes per IP for AI generation
 const generateRateLimiter = rateLimit({
