@@ -1,23 +1,15 @@
 /* --- 0. LAYOUT AND CONTAINERS --- */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
-@keyframes meshGradient {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-}
-
 .appContainer {
   display: flex;
   height: 100%;
   width: 100%;
-  /* Vibrant Animated Mesh Gradient Background */
-  background: linear-gradient(-45deg, #020617, #1e1b4b, #312e81, #4c1d95, #0f172a);
-  background-size: 400% 400%;
-  animation: meshGradient 20s ease infinite;
+  /* Soothing, minimalist dark background */
+  background: linear-gradient(135deg, #0f172a, #1e293b);
   font-family: 'Inter', Arial, sans-serif;
   overflow: hidden;
-  color: #f8fafc;
+  color: #e2e8f0;
 }
 
 .sidebarWrapper {
@@ -87,12 +79,12 @@
   font-size: 1rem;
   font-weight: 600;
   color: #ffffff;
-  background: linear-gradient(135deg, #0ea5e9, #6366f1);
-  border: none;
+  background: rgba(14, 165, 233, 0.8); /* Muted soothing blue/teal */
+  border: 1px solid rgba(14, 165, 233, 0.4);
   border-radius: 0.75rem;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
+  box-shadow: 0 4px 15px rgba(14, 165, 233, 0.2);
 }
 
 .loginButton:hover {
@@ -171,11 +163,10 @@
 }
 
 .activeHistoryItem {
-  background: rgba(99, 102, 241, 0.2) !important;
-  border: 1px solid rgba(99, 102, 241, 0.4) !important;
+  background: rgba(14, 165, 233, 0.15) !important;
+  border: 1px solid rgba(14, 165, 233, 0.3) !important;
   color: #ffffff;
   font-weight: 500;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
 
 .historyItemIcon {
@@ -311,9 +302,7 @@
   font-size: 1.35rem;
   font-weight: 700;
   flex-grow: 1;
-  background: linear-gradient(to right, #ffffff, #a5b4fc);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  color: #f8fafc;
   letter-spacing: 0.5px;
 }
 
@@ -324,8 +313,8 @@
 }
 
 .newChatButton {
-  background: linear-gradient(135deg, #0ea5e9, #6366f1);
-  border: none;
+  background: rgba(14, 165, 233, 0.8);
+  border: 1px solid rgba(14, 165, 233, 0.4);
   color: #ffffff;
   padding: 0.65rem 1.25rem;
   border-radius: 0.75rem;
@@ -333,12 +322,13 @@
   font-weight: 600;
   transition: all 0.3s ease;
   white-space: nowrap;
-  box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+  box-shadow: 0 4px 15px rgba(14, 165, 233, 0.15);
 }
 
 .newChatButton:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(99, 102, 241, 0.5);
+  transform: translateY(-1px);
+  background: rgba(14, 165, 233, 1);
+  box-shadow: 0 6px 20px rgba(14, 165, 233, 0.25);
 }
 
 .logoutButton {
@@ -419,12 +409,12 @@
 }
 
 .userMessage .messageBubble {
-  /* Vibrant Glass User Bubble */
-  background: rgba(99, 102, 241, 0.35);
+  /* Subtle Soothing User Bubble */
+  background: rgba(14, 165, 233, 0.2);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(165, 180, 252, 0.2);
-  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(14, 165, 233, 0.3);
+  box-shadow: 0 4px 15px 0 rgba(0, 0, 0, 0.1);
   color: #ffffff;
   border-bottom-right-radius: 0.25rem;
 }
@@ -509,10 +499,10 @@
 }
 
 .sendButton {
-  background: linear-gradient(135deg, #0ea5e9, #6366f1);
+  background: rgba(14, 165, 233, 0.8);
+  border: 1px solid rgba(14, 165, 233, 0.4);
   color: #ffffff;
   padding: 0 1.75rem;
-  border: none;
   cursor: pointer;
   transition: all 0.3s ease;
   display: flex;
@@ -523,7 +513,7 @@
 }
 
 .sendButton:hover {
-  filter: brightness(1.1);
+  background: rgba(14, 165, 233, 1);
 }
 
 .loadingButton {
@@ -568,8 +558,8 @@
 .moduleDetails {
   margin-bottom: 1rem;
   padding: 1.25rem;
-  border-left: 4px solid #6366f1;
-  background: rgba(0, 0, 0, 0.2);
+  border-left: 3px solid rgba(14, 165, 233, 0.6);
+  background: rgba(0, 0, 0, 0.15);
   border-radius: 0 0.5rem 0.5rem 0;
   transition: all 0.3s ease;
 }
@@ -626,9 +616,9 @@
 }
 
 .editButton:hover {
-  background: rgba(99, 102, 241, 0.2);
+  background: rgba(14, 165, 233, 0.15);
   color: #ffffff;
-  border-color: rgba(99, 102, 241, 0.5);
+  border-color: rgba(14, 165, 233, 0.4);
 }
 
 .editIcon {
@@ -681,7 +671,7 @@
 }
 
 .resourceLink {
-  color: #a5b4fc;
+  color: #38bdf8;
   text-decoration: none;
   transition: color 0.2s;
   word-break: break-all;
@@ -696,21 +686,22 @@
 .finalizeButton {
   margin-top: 2rem;
   width: 100%;
-  background: linear-gradient(135deg, #10b981, #059669);
+  background: rgba(14, 165, 233, 0.8);
+  border: 1px solid rgba(14, 165, 233, 0.4);
   color: white;
   padding: 1rem;
-  border: none;
   border-radius: 0.75rem;
   font-weight: 600;
   font-size: 1.1rem;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+  box-shadow: 0 4px 15px rgba(14, 165, 233, 0.15);
 }
 
 .finalizeButton:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(16, 185, 129, 0.5);
+  transform: translateY(-1px);
+  background: rgba(14, 165, 233, 1);
+  box-shadow: 0 6px 20px rgba(14, 165, 233, 0.25);
 }
 
 /* --- 9. LOGIN FORM SPECIFICS --- */
@@ -778,18 +769,19 @@
   font-size: 1.05rem;
   font-weight: 600;
   color: white;
-  background: linear-gradient(135deg, #0ea5e9, #6366f1);
-  border: none;
+  background: rgba(14, 165, 233, 0.8);
+  border: 1px solid rgba(14, 165, 233, 0.4);
   border-radius: 0.75rem;
   cursor: pointer;
   transition: all 0.3s ease;
   margin-top: 0.5rem;
-  box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+  box-shadow: 0 4px 15px rgba(14, 165, 233, 0.15);
 }
 
 .submitButton:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(99, 102, 241, 0.5);
+  transform: translateY(-1px);
+  background: rgba(14, 165, 233, 1);
+  box-shadow: 0 6px 20px rgba(14, 165, 233, 0.25);
 }
 
 .divider {
